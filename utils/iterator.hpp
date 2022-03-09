@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/03/09 10:19:39 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/03/09 10:58:54 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,32 +91,37 @@ namespace ft {
 
 	// iterator & iterator operators
 	template<class T, class U>
-	bool operator>(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator>(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return lhs.base() < rhs.base();
 	}
 	template<class T, class U>
-	bool operator<(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator<(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return rhs > lhs;
 	}
 	template<class T, class U>
-	bool operator>=(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator>=(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return !(rhs > lhs);
 	}
 	template<class T, class U>
-	bool operator<=(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator<=(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return !(lhs > rhs);
 	}
 	template<class T, class U>
-	bool operator==(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator==(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return lhs.base() == rhs.base();
 	}
 	template<class T, class U>
-	bool operator!=(const iterator<T>& lhs, const iterator<U>& rhs) {
+	bool operator!=(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
 		return !(lhs == rhs);
 	}
-
-	// iterator & iterator arithmetic operators
-	//template<class T, class U>
+	template<class T, class U>
+	typename ft::iterator<T>::difference_type operator-(const ft::iterator<T>& lhs, const ft::iterator<U>& rhs) {
+		return lhs.base() - rhs.base();
+	}
+	template<class T>
+	iterator<T> operator+(typename ft::iterator<T>::difference_type n, const ft::iterator<T>& other) {
+		return ft::iterator<T>(other.base() + n);
+	}
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/03/09 10:58:54 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/03/23 09:07:13 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,20 @@ namespace ft {
 			typedef typename ft::iterator_traits<T>::iterator_category	iterator_category;
 
 			// constructors
-			iterator() : _it(ft::nullptr_t) {}
-			iterator(const it_type& it) : _it(it) {}
+			iterator(void) : _it(ft::nullptr_t)
+			{}
+
+			iterator(const it_type& it)
+			: _it(it)
+			{}
+
 			template<class U>
-			iterator(const iterator<U>& other) : _it(other.base()) {}
-			virtual ~iterator() {}
+			iterator(const iterator<U>& other)
+			: _it(other.base())
+			{}
+
+			virtual ~iterator(void)
+			{}
 
 			// assign operator
 			template<class U>
@@ -45,18 +54,19 @@ namespace ft {
 			}
 
 			// getter
-			it_type base() const { return this->_it; }
+			it_type base(void) const { return this->_it; }
 
 			// access operators
-			reference operator*() const { return *_it; }
-			pointer operator->() const { return &(*_it); }
+			reference operator*(void) const { return *_it; }
+			pointer operator->(void) const { return &(*_it); }
 			reference operator[](difference_type n) const { return *(_it + n); }
+
 			// arithmetic operators
-			iterator& operator++() {
+			iterator& operator++(void) {
 				++_it;
 				return *this;
 			}
-			iterator& operator--() {
+			iterator& operator--(void) {
 				--_it;
 				return *this;
 			}

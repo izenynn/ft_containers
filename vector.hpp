@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/10 17:39:01 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/10 21:38:11 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,46 @@ namespace ft {
 			typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 			// constructors
-			vector(void) : base()
+			vector(void)
+			: _begin(ft::nullptr_t), _size(0), _capacity(0), _alloc(std::allocator<T>())
 			{}
 
-			explicit vector(const allocator_type& alloc) : base(alloc)
+			explicit
+			vector(const allocator_type& alloc)
+			: _begin(ft::nullptr_t), _size(0), _capacity(0), _alloc(alloc)
 			{}
 
 			explicit
 			vector(size_type n, const value_type& value = value_type(), const Allocator& alloc = Allocator())
-			: base(n, value, alloc)
-			{}
+			: _alloc(alloc) {
+				this->_begin = this->_alloc.allocate(n);
+				this->_capacity = n;
+				this->insert(this->_begin, n, value);
+			}
 
 			template<class InputIterator>
 			vector(InputIterator first, InputIterator last, const Allocator& alloc = Allocator(), typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0)
-			: base(first, last, alloc)
-			{}
+			: _alloc(alloc) {
+				size_type cnt = 0;
+				for (InputIterator it = first; it != last; ++it) ++cnt;
+				this->_begin = this->_alloc.allocate(cnt);
+				this->_capacity = cnt;
+				this->insert(this->_begin, first, last);
+			}
 
 			vector(const vector& other)
-			: base(other)
-			{}
+			: _size(other._size), _capacity(other._capacity), _alloc(other._alloc) {
+				this->_begin = this->_alloc.allocate(this->_capacity);
+				this->insert(this->_begin, other._begin, other.end());
+			}
 
-			~vector(void)
-			{}
+			~vector(void) {
+				this->_alloc.deallocate(this->_begin, this->_capacity);
+			}
 
-			vector(const base& other)
-			: base(other)
-			{}
+			//vector(const base& other)
+			//: base(other)
+			//{}
 
 			vector&
 			operator=(const vector& other) {
@@ -86,6 +100,7 @@ namespace ft {
 			}
 
 			//using base::get_allocator;
+			allocator_type get_allocator() const { return this->_alloc; }
 
 			// iterators
 			iterator begin() { return iterator(base::begin(), this); }
@@ -102,7 +117,9 @@ namespace ft {
 
 			// 23.2.4.2 capacity:
 			//using base::size;
+			size_type size() const { return this->_size; }
 			//using base::max_size;
+			size_type max_size() const { return this->_alloc.max_size(); }
 
 			void
 			resize(size_type sz, T c = T()) {
@@ -115,10 +132,21 @@ namespace ft {
 			}
 
 			//usign base::empty
+			bool empty() const { return _size == 0; }
 
 			void
 			reserve(size_type n) {
-				;
+				if (n > this->_alloc->max_size())
+					throw std::length_error("max capacity");
+				if (n > this->_capacity) {
+					pointer oldBegin = this->_begin;
+					pointer oldCapacity = this->_capacity;
+					pointer aux = this->_alloc.allocate(n);
+					this->insert(aux, this->_begin, this->end());
+					this->_begin = aux;
+					this->_capacity = n;
+					this->_alloc.deallocate(oldBegin, oldCapacity);
+				}
 			}
 
 			// element access
@@ -132,6 +160,16 @@ namespace ft {
 			}
 
 			//using base::at;
+			reference at(size_type n) {
+				if (n < 0 || n >= this->_size)
+					throw std::out_of_range("out of range");
+				return _begin[n];
+			}
+			const_reference at(size_type n) const {
+				if (n < 0 || n >= this->_size)
+					throw std::out_of_range("out of range");
+				return _begin[n];
+			}
 
 			reference
 			front() {
@@ -209,10 +247,10 @@ namespace ft {
 
 		private:
 			pointer			_begin;
-			pointer			_end;
+			//pointer			_end;
 			size_type		_size;
-			allocator_type	_alloc; // end cap
 			size_type		_capacity; // end cap
+			allocator_type	_alloc;
 	};
 
 	template<typename T, typename Alloc>

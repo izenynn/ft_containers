@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/10 21:38:11 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/10 23:01:03 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,35 +85,46 @@ namespace ft {
 
 			vector&
 			operator=(const vector& other) {
-				;
+				if (this != &other) {
+					this->clear();
+					this->_alloc.deallocate(this->_begin, this->_capacity());
+					this->_alloc = other.get_allocator();
+					this->_begin = this->_alloc.allocate(other._capacity);
+					this->_capacity = other._capacity;
+					this->insert(this->_begin, other._begin, other.end());
+				}
+				return *this;
 			}
 
+			// assing
 			template<typename InputIterator, typename std::_RequireInputIter<InputIterator> >
 			void
 			assign(InputIterator first, InputIterator last) {
-				;
+				this->clear();
+				this->insert(this->_begin, first, last);
 			}
 
 			void
 			assign(size_type n, const T& u) {
-				;
+				this->clear();
+				this->insert(this->_begin, n, u);
 			}
 
 			//using base::get_allocator;
 			allocator_type get_allocator() const { return this->_alloc; }
 
 			// iterators
-			iterator begin() { return iterator(base::begin(), this); }
-			const_iterator begin() const { return const_iterator(base::begin(), this); }
+			iterator begin(void) { return iterator(this->_begin); }
+			const_iterator begin(void) const { return const_iterator(this->_begin); }
 
-			iterator end() { return iterator(base::begin(), this); }
-			const_iterator end() const { return const_iterator(base::begin(), this); }
+			iterator end(void) { return iterator(this->_begin + this->_size); }
+			const_iterator end(void) const { return const_iterator(this->_begin + this->_size); }
 
-			reverse_iterator rbegin() { return reverse_iterator(end()); }
-			const_reverse_iterator rbegin() const { return reverse_iterator(end()); }
+			reverse_iterator rbegin(void) { return reverse_iterator(end()); }
+			const_reverse_iterator rbegin(void) const { return const_reverse_iterator(end()); }
 
-			reverse_iterator rend() { return reverse_iterator(begin()); }
-			const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+			reverse_iterator rend(void) { return reverse_iterator(begin()); }
+			const_reverse_iterator rend(void) const { return const_reverse_iterator(begin()); }
 
 			// 23.2.4.2 capacity:
 			//using base::size;
@@ -126,10 +137,7 @@ namespace ft {
 				;
 			}
 
-			size_type
-			capacity() const {
-				;
-			}
+			size_type capacity() const { return this->_capacity; }
 
 			//usign base::empty
 			bool empty() const { return _size == 0; }
@@ -150,14 +158,8 @@ namespace ft {
 			}
 
 			// element access
-			reference
-			operator[](size_type n) {
-				;
-			}
-			const_reference
-			operator[](size_type n) const {
-				;
-			}
+			reference operator[](size_type n) { return *(this->_begin + n); }
+			const_reference operator[](size_type n) const { return *(this->_begin + n); }
 
 			//using base::at;
 			reference at(size_type n) {
@@ -171,32 +173,15 @@ namespace ft {
 				return _begin[n];
 			}
 
-			reference
-			front() {
-				;
-			}
-			const_reference
-			front() const {
-				;
-			}
+			reference front(void) { return *(this->_begin); }
+			const_reference front(void) const { return *(this->_begin); }
 
-			reference
-			back() {
-				;
-			}
-			const_reference
-			back() const {
-				;
-			}
+			reference back(void) { return *(this->_begin + this->_size); }
+			const_reference back(void) const { return *(this->_begin + this->_size); }
 
 			// 23.2.4.3 modifiers:
 			void
 			push_back(const T& x) {
-				;
-			}
-
-			void
-			emplace_back(Args&&... args) {
 				;
 			}
 

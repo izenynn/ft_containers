@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 12:13:13 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 13:16:07 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@ namespace ft {
 	class vector {
 		public:
 			// typedef
-			typedef T			value_type;
-			typedef Allocator	allocator_type;
-			typedef size_t		size_type;
-			typedef ptrdiff_t	difference_type;
+			typedef T				value_type;
+			typedef Allocator		allocator_type;
+			typedef std::size_t		size_type;
+			typedef std::ptrdiff_t	difference_type;
 
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
@@ -98,9 +98,9 @@ namespace ft {
 			}
 
 			// assing
-			template<typename InputIterator, typename std::_RequireInputIter<InputIterator> >
+			template<typename InputIterator>
 			void
-			assign(InputIterator first, InputIterator last) {
+			assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
 				this->clear();
 				this->insert(this->_begin, first, last);
 			}
@@ -108,7 +108,7 @@ namespace ft {
 			void
 			assign(size_type n, const T& u) {
 				this->clear();
-				this->insert(this->_begin, n, u);
+				this->insert(this->begin(), n, u);
 			}
 
 			//using base::get_allocator;
@@ -149,13 +149,13 @@ namespace ft {
 
 			void
 			reserve(size_type n) {
-				if (n > this->_alloc->max_size())
+				if (n > this->_alloc.max_size())
 					throw std::length_error("max capacity");
 				if (n > this->_capacity) {
 					pointer oldBegin = this->_begin;
 					size_type oldCapacity = this->_capacity;
 					pointer aux = this->_alloc.allocate(n);
-					this->insert(aux, this->_begin, this->end());
+					this->insert(iterator(aux), this->begin(), this->end());
 					this->_begin = aux;
 					this->_capacity = n;
 					this->_alloc.deallocate(oldBegin, oldCapacity);
@@ -244,8 +244,8 @@ namespace ft {
 					this->_alloc.destroy(position.base());
 				}
 				for (iterator it = position; it < this->end() - 1; ++it) {
-					//this->_alloc.construct(it.base(), *(it + 1));
-					this->_alloc.construct(it, *(it + 1));
+					this->_alloc.construct(it.base(), *(it + 1));
+					//this->_alloc.construct(it, *(it + 1));
 				}
 				--(this->_size);
 				return (position);
@@ -266,7 +266,7 @@ namespace ft {
 				ft::swap(this->_alloc, x._alloc);
 			}
 
-			void clear() { erase(this->_begin, this->end()); }
+			void clear() { erase(this->begin(), this->end()); }
 
 			//base&
 			//m_base() { return *this; }

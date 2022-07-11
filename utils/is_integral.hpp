@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/10 09:59:08 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/10 10:34:43 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 13:09:58 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@ namespace ft {
 	template<> struct is_integral<unsigned short> : public ft::true_type {};
 	template<> struct is_integral<unsigned int> : public ft::true_type {};
 	template<> struct is_integral<unsigned long> : public ft::true_type {};
-	template<> struct is_integral<unsigned long long> : public ft::true_type {};
+	//template<> struct is_integral<unsigned long long> : public ft::true_type {};
 
 	template<> struct is_integral<signed char> : public ft::true_type {};
 	template<> struct is_integral<short> : public ft::true_type {};
 	template<> struct is_integral<int> : public ft::true_type {};
 	template<> struct is_integral<long> : public ft::true_type {};
-	template<> struct is_integral<long long> : public ft::true_type {};
+	//template<> struct is_integral<long long> : public ft::true_type {};
 
 	template<> struct is_integral<char> : public ft::true_type {};
 	template<> struct is_integral<bool> : public ft::true_type {};

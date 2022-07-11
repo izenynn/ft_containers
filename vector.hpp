@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 21:02:52 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:12:28 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -252,7 +252,7 @@ namespace ft {
 			// TODO no llamar a "insert" por cada elemento que da stack overflow xdxdxd
 			template<class InputIterator>
 			void
-			insert(iterator position, InputIterator first, InputIterator last) {
+			insert(iterator position, InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
 				while (first != last) {
 					position = insert(position, *first);
 					++position;

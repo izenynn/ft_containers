@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 20:59:42 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:02:52 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,11 +90,11 @@ namespace ft {
 			operator=(const vector& other) {
 				if (this != &other) {
 					this->clear();
-					this->_alloc.deallocate(this->_begin, this->_capacity());
+					this->_alloc.deallocate(this->_begin, this->capacity());
 					this->_alloc = other.get_allocator();
 					this->_begin = this->_alloc.allocate(other._capacity);
 					this->_capacity = other._capacity;
-					this->insert(this->_begin, other._begin, other.end());
+					this->insert(this->begin(), other.begin(), other.end());
 				}
 				return *this;
 			}

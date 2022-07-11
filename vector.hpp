@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/10 23:01:03 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 10:17:34 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "utils/iterator_traits.hpp"
 # include "utils/enable_if.hpp"
 # include "utils/is_integral.hpp"
+# include "utils/swap.hpp"
 
 namespace ft {
 	template<class T, class Allocator = std::allocator<T> >
@@ -134,7 +135,11 @@ namespace ft {
 
 			void
 			resize(size_type sz, T c = T()) {
-				;
+				if (sz > this->_size) {
+					this->insert(this->end(), sz - size(), c);
+				} else {
+					while (this->_size - sz != 0) { erase(this->end() - 1); }
+				}
 			}
 
 			size_type capacity() const { return this->_capacity; }
@@ -165,12 +170,12 @@ namespace ft {
 			reference at(size_type n) {
 				if (n < 0 || n >= this->_size)
 					throw std::out_of_range("out of range");
-				return _begin[n];
+				return *(this->_begin + n);
 			}
 			const_reference at(size_type n) const {
 				if (n < 0 || n >= this->_size)
 					throw std::out_of_range("out of range");
-				return _begin[n];
+				return *(this->_begin + n);
 			}
 
 			reference front(void) { return *(this->_begin); }
@@ -180,19 +185,19 @@ namespace ft {
 			const_reference back(void) const { return *(this->_begin + this->_size); }
 
 			// 23.2.4.3 modifiers:
-			void
-			push_back(const T& x) {
-				;
-			}
-
-			void
-			pop_back() {
-				;
-			}
+			void push_back(const T& x) { this->insert(this->end(), x); }
+			void pop_back() { this->erase(--end()); }
 
 			iterator
 			insert(iterator position, const T& x) {
-				;
+				//if (this->_size == this->_capacity) {
+				//	;
+				//}
+				//for (iterator it = this->end(); it > position; --it) {
+				//	this->_alloc.construct(position.base(), *(it - 1));
+				//}
+				//this->_size++;
+				//if (position - this->_begin())
 			}
 
 			void
@@ -217,33 +222,72 @@ namespace ft {
 
 			void
 			swap(vector& x) {
-				;
+				ft::swap(this->_begin, x._begin);
+				ft::swap(this->_size, x._size);
+				ft::swap(this->_capacity, x._capacity);
+				ft::swap(this->_alloc, x._alloc);
 			}
 
-			void
-			clear() {
-				;
-			}
+			void clear() { erase(this->_begin, this->end()); }
 
-			base&
-			m_base() { return *this; }
-			const base&
-			m_base() const { return *this; }
+			//base&
+			//m_base() { return *this; }
+			//const base&
+			//m_base() const { return *this; }
 
 		private:
 			pointer			_begin;
-			//pointer			_end;
 			size_type		_size;
 			size_type		_capacity; // end cap
 			allocator_type	_alloc;
 	};
 
 	template<typename T, typename Alloc>
-	inline bool operator==(const vector<T, Alloc>& lhs, const vector<T, Alloc>& rhs) {
-		return lhs.m_base() == rhs.m_base();
+	bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		if (lhs._size != rhs._size) {
+			return false;
+		}
+		iterator<T> lhsBegin = lhs._begin;
+		iterator<T> lhsEnd = lhs.end();
+		iterator<T> rhsBegin = rhs._begin;
+		while (lhsBegin != lhsEnd) {
+			if (*lhsBegin != *rhsBegin) return false;
+			++lhsBegin;
+			++rhsBegin;
+		}
+		return true;
+	}
+	template<typename T, typename Alloc>
+	bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		return !(lhs == rhs);
 	}
 
-	// etc... more operators
+	template<typename T, typename Alloc>
+	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		iterator<T> lhsBegin;
+		iterator<T> lhsEnd;
+		iterator<T> rhsBegin;
+		iterator<T> rhsEnd;
+		while (lhsBegin != lhsEnd) {
+			if (rhsBegin == rhsEnd || *rhsBegin < *lhsBegin) return false;
+			else if (*lhsBegin < *rhsBegin) return true;
+			++lhsBegin;
+			++rhsBegin;
+		}
+		return rhsBegin != rhsEnd;
+	}
+	template<typename T, typename Alloc>
+	bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		return (rhs < lhs);
+	}
+	template<typename T, typename Alloc>
+	bool operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		return !(rhs < lhs);
+	}
+	template<typename T, typename Alloc>
+	bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
+		return !(lhs < rhs);
+	}
 }
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 19:41:15 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 20:26:08 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,10 @@ namespace ft {
 
 			explicit
 			vector(size_type n, const value_type& value = value_type(), const Allocator& alloc = Allocator())
-			: _size(n), _capacity(n), _alloc(alloc) {
+			: _size(0), _capacity(n), _alloc(alloc) {
 				this->_begin = this->_alloc.allocate(n);
 				this->insert(this->begin(), n, value);
+				//std::cout << "==========\nSIZE: " << this->_size << "\nCAPACITY: " << this->_capacity << "\n==========" << std::endl;
 			}
 
 			template<class InputIterator>
@@ -203,8 +204,8 @@ namespace ft {
 
 			iterator
 			insert(iterator position, const T& x) {
-				std::cout << "SIZE: " << this->_size << "\n";
-				std::cout << "CAPACITY: " << this->_capacity << std::endl;
+				//std::cout << "SIZE: " << this->_size << "\n";
+				//std::cout << "CAPACITY: " << this->_capacity << std::endl;
 				if (this->_size == this->_capacity) {
 					// get distance
 					//size_type offset = 0;//begin, position
@@ -240,7 +241,12 @@ namespace ft {
 				for (size_type i = 0; i < n; ++i) {
 					position = insert(position, x);
 					++position;
+					//std::cout << i << " ";
+					//std::cout << "SIZE: " << this->_size << ", CAPACITY: " << this->_capacity << std::endl;
 				}
+				//std::cout << "SIZE: " << this->_size << ", CAPACITY: " << this->_capacity << std::endl;
+
+				;
 			}
 
 			// TODO no llamar a "insert" por cada elemento que da stack overflow xdxdxd

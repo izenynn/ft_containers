@@ -6,14 +6,12 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 22:10:19 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/12 01:44:42 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP_
 # define VECTOR_HPP_
-
-# include <iostream> // TODO remove this
 
 # include <memory>
 
@@ -23,6 +21,8 @@
 # include "utils/enable_if.hpp"
 # include "utils/is_integral.hpp"
 # include "utils/swap.hpp"
+# include "utils/equal.hpp"
+# include "utils/lexicographical_compare.hpp"
 
 namespace ft {
 	template<class T, class Allocator = std::allocator<T> >
@@ -303,18 +303,10 @@ namespace ft {
 
 	template<class T, class Alloc>
 	bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-		if (lhs._size != rhs._size) {
+		if (lhs.size() != rhs.size()) {
 			return false;
 		}
-		iterator<T> lhsBegin = lhs._begin;
-		iterator<T> lhsEnd = lhs.end();
-		iterator<T> rhsBegin = rhs._begin;
-		while (lhsBegin != lhsEnd) {
-			if (*lhsBegin != *rhsBegin) return false;
-			++lhsBegin;
-			++rhsBegin;
-		}
-		return true;
+		return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
 	}
 	template<class T, class Alloc>
 	bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
@@ -323,17 +315,7 @@ namespace ft {
 
 	template<class T, class Alloc>
 	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-		iterator<T> lhsBegin = lhs->begin();
-		iterator<T> lhsEnd = lhs->end();
-		iterator<T> rhsBegin = rhs.begin();
-		iterator<T> rhsEnd = rhs.end();
-		while (lhsBegin != lhsEnd) {
-			if (rhsBegin == rhsEnd || *rhsBegin < *lhsBegin) return false;
-			else if (*lhsBegin < *rhsBegin) return true;
-			++lhsBegin;
-			++rhsBegin;
-		}
-		return rhsBegin != rhsEnd;
+		return ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 	}
 	template<class T, class Alloc>
 	bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {

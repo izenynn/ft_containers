@@ -6,12 +6,14 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 17:16:39 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 19:41:15 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP_
 # define VECTOR_HPP_
+
+# include <iostream> // TODO remove this
 
 # include <memory>
 
@@ -54,10 +56,9 @@ namespace ft {
 
 			explicit
 			vector(size_type n, const value_type& value = value_type(), const Allocator& alloc = Allocator())
-			: _alloc(alloc) {
+			: _size(n), _capacity(n), _alloc(alloc) {
 				this->_begin = this->_alloc.allocate(n);
-				this->_capacity = n;
-				this->insert(this->_begin, n, value);
+				this->insert(this->begin(), n, value);
 			}
 
 			template<class InputIterator>
@@ -102,7 +103,7 @@ namespace ft {
 			void
 			assign(InputIterator first, InputIterator last, typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type* = 0) {
 				this->clear();
-				this->insert(this->_begin, first, last);
+				this->insert(this->begin(), first, last);
 			}
 
 			void
@@ -149,7 +150,7 @@ namespace ft {
 
 			void
 			reserve(size_type n) {
-				if (n > this->_alloc.max_size())
+				if (n > this->max_size())
 					throw std::length_error("max capacity");
 				if (n > this->_capacity) {
 					// METHOD 1
@@ -161,7 +162,8 @@ namespace ft {
 					//this->_capacity = n;
 					//this->_alloc.deallocate(oldBegin, oldCapacity);
 					// METHOD 2
-					pointer aux = this->_alloc.allocate(n);
+					//std::cout << "====\n" << n << std::endl;
+					pointer aux = this->_alloc.allocate(n); // segfault here
 					for (size_type i = 0; i < this->_size; ++i) {
 						this->_alloc.construct(aux + i, *(this->_begin + i));
 					}
@@ -201,6 +203,8 @@ namespace ft {
 
 			iterator
 			insert(iterator position, const T& x) {
+				std::cout << "SIZE: " << this->_size << "\n";
+				std::cout << "CAPACITY: " << this->_capacity << std::endl;
 				if (this->_size == this->_capacity) {
 					// get distance
 					//size_type offset = 0;//begin, position
@@ -208,13 +212,12 @@ namespace ft {
 					//iterator aux2 = iterator(position);
 					//for (; aux1 != aux2; ++aux1) ++offset;
 					//
-					//size_type offset = position - this->_begin;
 					size_type offset = position - this->begin();
 					this->reserve(this->_size + 1);
 					position = this->begin() + offset;
 				}
 				for (iterator it = this->end(); it > position; --it) {
-					this->_alloc.construct(it.base(), *(it - 1));
+					this->_alloc.construct(it.base(), *(it - 1)); // [!] SEGV on unknown address
 					//this->_alloc.destroy(it.base() + 1);
 				}
 				this->_alloc.construct(position.base(), x);

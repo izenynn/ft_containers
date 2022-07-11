@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 10:17:34 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 11:17:19 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ namespace ft {
 			typedef T			value_type;
 			typedef Allocator	allocator_type;
 			typedef size_t		size_type;
-			typedef ptrdiff_t	defference_type;
+			typedef ptrdiff_t	difference_type;
 
 			typedef typename Allocator::reference			reference;
 			typedef typename Allocator::const_reference		const_reference;
@@ -190,6 +190,25 @@ namespace ft {
 
 			iterator
 			insert(iterator position, const T& x) {
+				if (this->_size == this->_capacity) {
+					// get distance
+					//size_type offset = 0;//begin, position
+					//iterator aux1 = iterator(this->_begin);
+					//iterator aux2 = iterator(position);
+					//for (; aux1 != aux2; ++aux1) ++offset;
+					//
+					const difference_type offset = position - this->_begin;//begin, position
+					this->reserve(this->_size + 1);
+					position = this->_begin + offset;
+				}
+				for (iterator it = this->end(); it > position; --it) {
+					this->_alloc.construct(it.base(), *(it - 1));
+					//this->_alloc.destroy(it.base() + 1);
+				}
+				this->_alloc.construct(position.base(), x);
+				++(this->_size);
+				return (position);
+
 				//if (this->_size == this->_capacity) {
 				//	;
 				//}
@@ -202,22 +221,40 @@ namespace ft {
 
 			void
 			insert(iterator position, size_type n, const T& x) {
-				;
+				for (size_type i = 0; i < n; ++i) {
+					position = insert(position, x);
+					++position;
+				}
 			}
 
 			template<class InputIterator>
 			void
 			insert(iterator position, InputIterator first, InputIterator last) {
-				;
+				while (first != last) {
+					position = insert(position, *first);
+					++position;
+					++first;
+				}
 			}
 
 			iterator
 			erase(iterator position) {
-				;
+				if (position != this->end()) {
+					this->_alloc.destroy(position.base());
+				}
+				for (iterator it = position; it < this->end() - 1; ++it) {
+					//this->_alloc.construct(it.base(), *(it + 1));
+					this->_alloc.construct(it, *(it + 1));
+				}
+				--(this->_size);
+				return (position);
 			}
 			iterator
 			erase(iterator first, iterator last) {
-				;
+				while (first != last) {
+					erase(--last);
+				}
+				return (last);
 			}
 
 			void
@@ -242,7 +279,7 @@ namespace ft {
 			allocator_type	_alloc;
 	};
 
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator==(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		if (lhs._size != rhs._size) {
 			return false;
@@ -257,12 +294,12 @@ namespace ft {
 		}
 		return true;
 	}
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator!=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		return !(lhs == rhs);
 	}
 
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		iterator<T> lhsBegin;
 		iterator<T> lhsEnd;
@@ -276,17 +313,22 @@ namespace ft {
 		}
 		return rhsBegin != rhsEnd;
 	}
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator>(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		return (rhs < lhs);
 	}
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator<=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		return !(rhs < lhs);
 	}
-	template<typename T, typename Alloc>
+	template<class T, class Alloc>
 	bool operator>=(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
 		return !(lhs < rhs);
+	}
+
+	template <class T, class Alloc>
+	void swap(vector<T, Alloc>& lhs, vector<T, Alloc>& rhs) {
+		lhs.swap(rhs);
 	}
 }
 

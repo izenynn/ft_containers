@@ -85,3 +85,5 @@ dkms.conf
 # tester
 .tester
 **/.tester
+_tests
+**/_tests

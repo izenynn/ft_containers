@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 13:35:44 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 16:21:38 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,13 +152,22 @@ namespace ft {
 				if (n > this->_alloc.max_size())
 					throw std::length_error("max capacity");
 				if (n > this->_capacity) {
-					pointer oldBegin = this->_begin;
-					size_type oldCapacity = this->_capacity;
+					// METHOD 1
+					//pointer oldBegin = this->_begin;
+					//size_type oldCapacity = this->_capacity;
+					//pointer aux = this->_alloc.allocate(n); // !!!
+					//this->insert(iterator(aux), this->begin(), this->end());
+					//this->_begin = aux;
+					//this->_capacity = n;
+					//this->_alloc.deallocate(oldBegin, oldCapacity);
+					// METHOD 2
 					pointer aux = this->_alloc.allocate(n);
-					this->insert(iterator(aux), this->begin(), this->end());
+					for (size_type i = 0; i < this->_size; ++i) {
+						this->_alloc.construct(aux + i, *(this->_begin + i));
+					}
+					this->_alloc.deallocate(this->_begin, this->_capacity);
 					this->_begin = aux;
 					this->_capacity = n;
-					this->_alloc.deallocate(oldBegin, oldCapacity);
 				}
 			}
 
@@ -168,7 +177,7 @@ namespace ft {
 
 			//using base::at;
 			reference at(size_type n) {
-				if (n < 0 || n >= this->_size)
+				if (n >= this->_size)
 					throw std::out_of_range("out of range");
 				return *(this->_begin + n);
 			}
@@ -220,6 +229,7 @@ namespace ft {
 				//if (position - this->_begin())
 			}
 
+			// TODO no llamar a "insert" por cada elemento que da stack overflow xdxdxd
 			void
 			insert(iterator position, size_type n, const T& x) {
 				for (size_type i = 0; i < n; ++i) {
@@ -228,6 +238,7 @@ namespace ft {
 				}
 			}
 
+			// TODO no llamar a "insert" por cada elemento que da stack overflow xdxdxd
 			template<class InputIterator>
 			void
 			insert(iterator position, InputIterator first, InputIterator last) {
@@ -302,10 +313,10 @@ namespace ft {
 
 	template<class T, class Alloc>
 	bool operator<(const ft::vector<T, Alloc>& lhs, const ft::vector<T, Alloc>& rhs) {
-		iterator<T> lhsBegin;
-		iterator<T> lhsEnd;
-		iterator<T> rhsBegin;
-		iterator<T> rhsEnd;
+		iterator<T> lhsBegin = lhs->begin();
+		iterator<T> lhsEnd = lhs->end();
+		iterator<T> rhsBegin = rhs.begin();
+		iterator<T> rhsEnd = rhs.end();
 		while (lhsBegin != lhsEnd) {
 			if (rhsBegin == rhsEnd || *rhsBegin < *lhsBegin) return false;
 			else if (*lhsBegin < *rhsBegin) return true;

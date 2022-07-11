@@ -1,5 +1,3 @@
-
-
 #include <iostream>
 #include <vector>
 #include "vector.hpp"
@@ -15,11 +13,11 @@ int main()
 		g1.push_back(i);
 
 	std::cout << "Output of begin and end: ";
-	for (auto i = g1.begin(); i != g1.end(); ++i)
+	for (iterator<vector<int> > i = g1.begin(); i != g1.end(); ++i)
 		std::cout << *i << " ";
 
 	std::cout << "\nOutput of rbegin and rend: ";
-	for (auto ir = g1.rbegin(); ir != g1.rend(); ++ir)
+	for (reverse_iterator<vector<int> > ir = g1.rbegin(); ir != g1.rend(); ++ir)
 		std::cout << *ir << " ";
 
 	return 0;

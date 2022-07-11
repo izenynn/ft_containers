@@ -9,8 +9,9 @@ int main()
 {
     vector<int> g1;
   
-    for (int i = 1; i <= 5; i++)
+    for (int i = 1; i <= 5; i++) {
         g1.push_back(i);
+	}
   
 	std::cout << "Size : " << g1.size();
 	std::cout << "\nCapacity : " << g1.capacity();

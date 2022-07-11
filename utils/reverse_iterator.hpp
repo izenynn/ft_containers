@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/10 14:22:05 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 11:24:56 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ namespace ft {
 	template<class T>
 	class reverse_iterator {
 		protected:
-			typedef T	current;
+			T	current;
 
 		public:
 			// typedefs

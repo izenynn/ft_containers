@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 11:17:19 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 12:13:13 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ namespace ft {
 					throw std::length_error("max capacity");
 				if (n > this->_capacity) {
 					pointer oldBegin = this->_begin;
-					pointer oldCapacity = this->_capacity;
+					size_type oldCapacity = this->_capacity;
 					pointer aux = this->_alloc.allocate(n);
 					this->insert(aux, this->_begin, this->end());
 					this->_begin = aux;
@@ -197,9 +197,10 @@ namespace ft {
 					//iterator aux2 = iterator(position);
 					//for (; aux1 != aux2; ++aux1) ++offset;
 					//
-					const difference_type offset = position - this->_begin;//begin, position
+					//size_type offset = position - this->_begin;
+					size_type offset = position - this->begin();
 					this->reserve(this->_size + 1);
-					position = this->_begin + offset;
+					position = this->begin() + offset;
 				}
 				for (iterator it = this->end(); it > position; --it) {
 					this->_alloc.construct(it.base(), *(it - 1));

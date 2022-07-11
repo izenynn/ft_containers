@@ -1,3 +1,24 @@
+/*
+
+EXPECTED OUTPUT
+
+The vector elements are: 10 10 10 10 10 
+The last element is: 15
+The vector elements are: 10 10 10 10 10 
+The first element is: 5
+The first element is: 10
+The first element is: 5
+The last element is: 20
+Vector size after erase(): 0
+
+Vector 1: 1 2 
+Vector 2: 3 4 
+After Swap 
+Vector 1: 3 4 
+Vector 2: 1 2
+
+*/
+
 #include <bits/stdc++.h>
 #include "vector.hpp"
 using namespace ft;

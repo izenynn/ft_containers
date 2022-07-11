@@ -1,3 +1,15 @@
+/*
+
+EXPECTED OUTPUT
+
+Reference operator [g] : g1[2] = 30
+at : g1.at(4) = 50
+front() : g1.front() = 10
+back() : g1.back() = 100
+The first element is 10
+
+*/
+
 #include <bits/stdc++.h>
 #include "vector.hpp"
 using namespace ft;

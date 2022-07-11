@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 21:12:28 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 22:10:19 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ namespace ft {
 			: _size(0), _capacity(n), _alloc(alloc) {
 				this->_begin = this->_alloc.allocate(n);
 				this->insert(this->begin(), n, value);
-				//std::cout << "==========\nSIZE: " << this->_size << "\nCAPACITY: " << this->_capacity << "\n==========" << std::endl;
 			}
 
 			template<class InputIterator>
@@ -123,11 +122,11 @@ namespace ft {
 			iterator end(void) { return iterator(this->_begin + this->_size); }
 			const_iterator end(void) const { return const_iterator(this->_begin + this->_size); }
 
-			reverse_iterator rbegin(void) { return reverse_iterator(end()); }
-			const_reverse_iterator rbegin(void) const { return const_reverse_iterator(end()); }
+			reverse_iterator rbegin(void) { return reverse_iterator(this->end()); }
+			const_reverse_iterator rbegin(void) const { return const_reverse_iterator(this->end()); }
 
-			reverse_iterator rend(void) { return reverse_iterator(begin()); }
-			const_reverse_iterator rend(void) const { return const_reverse_iterator(begin()); }
+			reverse_iterator rend(void) { return reverse_iterator(this->begin()); }
+			const_reverse_iterator rend(void) const { return const_reverse_iterator(this->begin()); }
 
 			// 23.2.4.2 capacity:
 			//using base::size;

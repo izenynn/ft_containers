@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 11:24:36 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:34:35 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft {
 			// assign operator
 			template<class U>
 			iterator& operator=(const iterator<U>& other) {
-				if (this == &other) return *this;
+				//if (this == &other) return *this;
 				this->current = other.base();
 				return *this;
 			}
@@ -87,12 +87,13 @@ namespace ft {
 			iterator operator-(difference_type n) const {
 				return iterator(this->current + (-n));
 			}
-			iterator& operator+=(difference_type n) const {
-				*this = *this + n;
+
+			iterator& operator+=(difference_type n) {
+				this->current += n;
 				return *this;
 			}
-			iterator& operator-=(difference_type n) const {
-				*this = *this + (-n);
+			iterator& operator-=(difference_type n) {
+				this->current += (-n);
 				return *this;
 			}
 	};

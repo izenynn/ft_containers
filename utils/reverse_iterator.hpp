@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 13:56:21 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 21:21:25 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ namespace ft {
 			// assign operator
 			template<class U>
 			reverse_iterator& operator=(const reverse_iterator<U>& other) {
-				if (this == &other) return *this;
+				//if (this == &other) return *this;
 				this->current = other.base();
 				return *this;
 			}

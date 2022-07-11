@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 20:26:08 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 20:45:22 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ namespace ft {
 			}
 
 			vector(const vector& other)
-			: _size(other._size), _capacity(other._capacity), _alloc(other._alloc) {
+			: _size(0), _capacity(other._capacity), _alloc(other._alloc) {
 				this->_begin = this->_alloc.allocate(this->_capacity);
 				this->insert(this->begin(), other.begin(), other.end());
 			}
@@ -185,7 +185,7 @@ namespace ft {
 				return *(this->_begin + n);
 			}
 			const_reference at(size_type n) const {
-				if (n < 0 || n >= this->_size)
+				if (n >= this->_size)
 					throw std::out_of_range("out of range");
 				return *(this->_begin + n);
 			}

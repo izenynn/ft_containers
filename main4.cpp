@@ -29,5 +29,10 @@ int main()
 
 	std::cout << "\nback() : g1.back() = " << g1.back();
 
+	// pointer to the first element
+	int* pos = g1.data();
+
+	std::cout << "\nThe first element is " << *pos;
+
     return 0;
 }

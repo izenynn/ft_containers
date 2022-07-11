@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/11 16:21:38 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/11 17:16:39 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,8 +190,10 @@ namespace ft {
 			reference front(void) { return *(this->_begin); }
 			const_reference front(void) const { return *(this->_begin); }
 
-			reference back(void) { return *(this->_begin + this->_size); }
-			const_reference back(void) const { return *(this->_begin + this->_size); }
+			reference back(void) { return *(this->_begin + this->_size - 1); }
+			const_reference back(void) const { return *(this->_begin + this->_size - 1); }
+
+			value_type* data(void) { return this->_begin; }
 
 			// 23.2.4.3 modifiers:
 			void push_back(const T& x) { this->insert(this->end(), x); }

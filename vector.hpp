@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/12 01:44:42 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/12 12:07:49 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ namespace ft {
 				}
 				for (iterator it = this->end(); it > position; --it) {
 					this->_alloc.construct(it.base(), *(it - 1)); // [!] SEGV on unknown address
-					//this->_alloc.destroy(it.base() + 1);
+					//this->_alloc.destroy(it.base() + 1); // TODO don't know if it's neccesary
 				}
 				this->_alloc.construct(position.base(), x);
 				++(this->_size);

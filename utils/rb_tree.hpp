@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 17:55:42 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 19:31:48 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <memory>
 # include <functional> // std::less
+# include <cassert> // assert()
 
 # include "nullptr_t.hpp"
 # include "pair.hpp"
@@ -30,10 +31,8 @@ namespace ft {
 		typedef bool	color_type;
 
 		// constants
-		enum e_color {
-			RED = true,
-			BLACK = false
-		};
+		static const bool RED = true;
+		static const bool BLACK = false;
 
 		// family
 		rbnode*		parent;
@@ -47,10 +46,18 @@ namespace ft {
 		// constructors
 		//node() : color(k_red) {}
 
-		rbnode(const value_type& value, rbnode* nil)
-		: color(rbnode::e_color::RED),
+		rbnode(const value_type& value)
+		: color(rbnode::BLACK),
 		  data(value),
-		  parent(nil) {}
+		  parent(ft::nullptr_t),
+		  left(ft::nullptr_t),
+		  right(ft::nullptr_t) {}
+		rbnode(const value_type& value, rbnode* nil)
+		: color(rbnode::BLACK),
+		  data(value),
+		  parent(nil),
+		  left(nil),
+		  right(nil) {}
 
 		rbnode(const rbnode& other)
 		: parent(other.parent),
@@ -64,28 +71,28 @@ namespace ft {
 		// member functions
 		inline value_type& getData() { return this->data; }
 
-		inline bool isBlack() { return this->color == rbnode::e_color::BLACK; }
-		inline bool isRed() { return this->color == rbnode::e_color::RED; }
-		inline rbnode::e_color getColor() { return this->color; }
+		inline bool isBlack() { return this->color == rbnode::BLACK; }
+		inline bool isRed() { return this->color == rbnode::RED; }
+		inline color_type getColor() { return this->color; }
 
-		inline void setBlack() { this->color = rbnode::e_color::BLACK; return; }
-		inline void setRed() { this->color = rbnode::e_color::RED; return; }
+		inline void setBlack() { this->color = rbnode::BLACK; return; }
+		inline void setRed() { this->color = rbnode::RED; return; }
 		/*inline void swapColor(rbnode& other) {
 			rbnode::e_color aux = this->color;
 			this->color = other.color;
 			other.color = aux;
-		}
+		}*/
 
 		inline bool isLeft() {
-			assert(this->parent->children[rbnode::e_side::LEFT] == this);
-			return this->parent->children[rbnode::e_side::LEFT] == this;
+			assert(this->parent->left == this);
+			return this->parent->left == this;
 		}
 		inline bool isRight() {
-			assert(this->parent->children[rbnode::e_side::LEFT] == this);
-			return this->parent->children[rbnode::e_side::LEFT] == this;
+			assert(this->parent->right == this);
+			return this->parent->right == this;
 		}
 
-		inline void swapSide() {
+		/*inline void swapSide() {
 			assert(this->parent->children[rbnode::e_side::LEFT] == this
 					|| this->parent->children[rbnode::e_side::RIGHT] == this);
 			rbnode* aux = this->parent[rbnode::e_side::LEFT];
@@ -121,6 +128,7 @@ namespace ft {
 		inline void setRight() {}
 	};
 
+	//template<class T, class Compare, class Allocator>
 	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class rbtree {
 		public:
@@ -137,7 +145,7 @@ namespace ft {
 			//typedef typename Allocator::pointer				pointer;
 			//typedef typename Allocator::const_pointer		const_pointer;
 
-			typedef ft::rbnode<T>											node_type;
+			typedef ft::rbnode<value_type>									node_type;
 			typedef typename Allocator::template rebind<node_type>::other	node_allocator;
 			typedef typename node_allocator::pointer						pointer;
 			typedef typename node_allocator::const_pointer					const_pointer;
@@ -165,7 +173,24 @@ namespace ft {
 				this->node_nil = this->node_alloc.allocate(1);
 				this->node_alloc.construct(this->node_nil, value_type());
 
-				this->node_nil->setBlack;
+				this->node_nil->setBlack();
+				this->node_nil->parent = this->node_nil;
+
+				this->node_root = this->node_nil;
+
+				//this->node_nil->left = this->node_nil;
+				this->node_nil->left = this->node_root;
+				//this->node_nil->right = this->node_nil;
+				this->node_nil->right = this->node_root;
+
+				this->node_root->parent = this->node_nil;
+			}
+			rbtree(const compare& lcomp, const allocator_type& lalloc)
+			: size(0), comp(lcomp), alloc(lalloc) {
+				this->node_nil = this->node_alloc.allocate(1);
+				this->node_alloc.construct(this->node_nil, value_type());
+
+				this->node_nil->setBlack();
 				this->node_nil->parent = this->node_nil;
 
 				this->node_root = this->node_nil;
@@ -325,7 +350,7 @@ namespace ft {
 				this->node_alloc.destroy(it);
 				this->node_alloc.deallocate(it, 1);
 				//if (color == node_type::e_color::BLACK) removeFix(save);
-				if (color == node_type::e_color::BLACK) {
+				if (color == node_type::BLACK) {
 					pointer aux;
 					while (save->parent != this->node_nil && save->isBlack()) {
 						if (save->isLeft()) {
@@ -475,8 +500,8 @@ namespace ft {
 			}
 			inline void swapColor(node_type& n1, node_type& n2) {
 				typename node_type::color_type aux = n1.color;
-				n1->color = n2->color;
-				n2->color = aux;
+				n1.color = n2.color;
+				n2.color = aux;
 			}
 			//TODO replace ???
 
@@ -495,7 +520,9 @@ namespace ft {
 
 		private:
 			// i mean, no, i don't need this and i don't wanna implement it
-			rbtree& operator=(const rbtree& other) {}
+			rbtree& operator=(const rbtree& other) {
+				(void)other;
+			}
 	};
 }
 

@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 11:00:12 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 12:18:18 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:23:56 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ namespace ft {
 				} else {
 					node_pointer aux = this->_current->parent;
 					while (aux != this->_nil && this->_current == aux->left) {
-						this->_current == aux;
+						this->_current = aux;
 						aux = aux->parent;
 					}
 					this->_current = this->_current->parent;

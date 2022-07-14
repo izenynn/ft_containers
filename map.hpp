@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 17:52:47 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 18:21:38 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,9 @@ namespace ft {
 				}
 			}
 
-			map(const map& other) { *this = other; }
+			map(const map& other) : _tree(other._tree.comp, other._tree.alloc) {
+				insert(other.begin(), other.end());
+			}
 
 			~map() { this->clear(); }
 
@@ -112,7 +114,7 @@ namespace ft {
 			// capacity
 			bool empty() const { return this->_tree.empty(); }
 			size_type size() const { return this->_tree.getSize(); }
-			size_type max_size() const { return this->_tree.max_size(); }
+			size_type max_size() const { return this->_tree.getMaxSize(); }
 
 			// operators
 			mapped_type& operator[](const key_type& x) {
@@ -130,6 +132,7 @@ namespace ft {
 			}
 			iterator insert(iterator hint, const value_type& value) {
 				// don't wanna implement this, it's already quite fast >.<
+				(void)hint;
 				return this->_tree.insert(value).first;
 			}
 			template<class InputIt>

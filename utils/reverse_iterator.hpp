@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 01:10:13 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/12 00:48:42 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 22:37:27 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,16 @@ namespace ft {
 			typedef typename ft::iterator_traits<T>::iterator_category	iterator_category;
 
 			// constructors
-			reverse_iterator(void) : current(ft::nullptr_t)
+			//reverse_iterator() : current(ft::nullptr_t)
+			reverse_iterator() : current()
 			{}
 
-			explicit reverse_iterator(const T& other)
-			: current(other)
-			{}
+			//explicit reverse_iterator(const T& other)
+			//: current(other)
+			//{}
+
+			explicit reverse_iterator(T other)
+			: current(other) {}
 
 			template<class U>
 			reverse_iterator(const reverse_iterator<U>& other)

@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 14:32:24 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 14:37:27 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define RB_TREE_HPP_
 
 # include <memory>
+# include <functional> // std::less
 
 # include "nullptr_t.hpp"
 # include "pair.hpp"
@@ -34,7 +35,9 @@ namespace ft {
 		};
 
 		// family
-		rbnode*		parent, left, right;
+		rbnode*		parent;
+		rbnode*		left;
+		rbnode*		right;
 
 		// node content
 		bool		color;

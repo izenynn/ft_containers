@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 19:38:24 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 19:49:54 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -306,8 +306,16 @@ namespace ft {
 				this->node_nil->left = this->node_root;
 				this->node_nil->right = this->node_root;
 			}
-			// remove
+
 			void remove(const value_type& content) {
+				nodeRemove(content);
+				this->node_root->parent = this->node_nil;
+				this->node_nil->left = this->node_root;
+				this->node_nil->right = this->node_root;
+
+			}
+
+			void nodeRemove(const value_type& content) {
 				pointer it = this->node_root;
 				pointer save;
 				while (it != this->node_nil
@@ -405,7 +413,7 @@ namespace ft {
 							}
 						}
 					}
-					save->color->setBlack();
+					save->setBlack();
 				}
 			}
 			void nodeReplace(pointer oldNode, pointer newNode) {
@@ -458,9 +466,11 @@ namespace ft {
 				while (x != this->node_nil) {
 					this->recursiveRemove(x->right);
 					aux = x->left;
-					this->nodeRemove(x);
+					this->node_alloc.destroy(x);
+					this->node_alloc.deallocate(x, 1);
 					x = aux;
 				}
+
 			}
 			pointer nodeCreate(const value_type& content, pointer parent) {
 				pointer node = this->node_alloc.allocate(1);
@@ -471,7 +481,7 @@ namespace ft {
 				node->setRed();
 				return node;
 			}
-			//TODO nodeRemove ???
+
 			void rotateLeft(pointer node) {
 				pointer aux = node->right;
 				node->right = aux->left;

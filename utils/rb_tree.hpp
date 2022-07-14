@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 19:49:54 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 19:59:17 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ namespace ft {
 			if (this->parent && this->parent->isRight()) {
 				return this->getGrandParent()->left;
 			}
+			return (ft::nullptr_t);
 		}
 
 		inline void setParent() {}
@@ -436,16 +437,14 @@ namespace ft {
 			pointer min() const {
 				pointer it = this->node_root;
 				if (it == this->node_nil) return it;
-				for(pointer it = this->node_root; it->left != this->node_nil ; it = it->left) {
-					return it;
-				}
+				while (it->left != this->node_nil) it = it->left;
+				return it;
 			}
 			pointer max() const {
 				pointer it = this->node_root;
 				if (it == this->node_nil) return it;
-				for(pointer it = this->node_root; it->right != this->node_nil ; it = it->right) {
-					return it;
-				}
+				while (it->right != this->node_nil) it = it->right;
+				return it;
 			}
 			pointer find(const value_type& x) const {
 				for (pointer it = this->node_root; it != this->node_nil; ) {
@@ -508,10 +507,10 @@ namespace ft {
 				aux->right = node;
 				node->parent = aux;
 			}
-			inline void swapColor(node_type& n1, node_type& n2) {
-				typename node_type::color_type aux = n1.color;
-				n1.color = n2.color;
-				n2.color = aux;
+			inline void swapColor(pointer n1, pointer n2) {
+				typename node_type::color_type aux = n1->color;
+				n1->color = n2->color;
+				n2->color = aux;
 			}
 			//TODO replace ???
 

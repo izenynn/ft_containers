@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 18:21:38 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:00:13 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ namespace ft {
 			mapped_type& operator[](const key_type& x) {
 				iterator ret = this->find(x);
 				if (ret == this->end()) {
-					this->insert(ft::make_pair(x, this->mapped_type()));
+					this->insert(ft::make_pair(x, mapped_type()));
 					ret = this->find(x);
 				}
 				return ret->second;

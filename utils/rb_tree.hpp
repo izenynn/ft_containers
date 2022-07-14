@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 14:37:27 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 17:25:14 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,7 +391,7 @@ namespace ft {
 
 			bool empty() const { return this->size == 0; }
 
-			//TODO swap ???
+			//TODO swap ??? (and = constructor and assing)
 			pointer min() const {
 				pointer it = this->node_root;
 				if (it == this->node_nil) return it;

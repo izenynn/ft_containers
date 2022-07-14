@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 10:59:21 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 14:32:24 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 
 # include "nullptr_t.hpp"
 # include "pair.hpp"
+# include "rb_iterator.hpp"
+# include "reverse_iterator.hpp"
 
 namespace ft {
 	template<class T>
@@ -85,17 +87,30 @@ namespace ft {
 			rbnode* aux = this->parent[rbnode::e_side::LEFT];
 			this->parent[rbnode::e_side::LEFT] = this->parent[rbnode::e_side::RIGHT];
 			this->parent[rbnode::e_side::RIGHT] = aux;
-		}
+		}*/
 
 		inline rbnode* getBrother() {
 			if (this->parent == ft::nullptr_t) return ft::nullptr_t;
 
-			assert(this->parent->children[rbnode::e_side::LEFT] == this
-					|| this->parent->children[rbnode::e_side::RIGHT] == this);
-			return (this->parent->children[rbnode::e_side::LEFT] == this
-					? this->parent->children[rbnode::e_side::LEFT]
-					: this->parent->children[rbnode::e_side::RIGHT]);
-		}*/
+			assert(this->parent->left == this
+					|| this->parent->right == this);
+			return (this->parent->left == this
+					? this->parent->left
+					: this->parent->right);
+		}
+		inline rbnode* getGrandParent() {
+			assert(this->parent && this->parent->parent);
+			return(this->parent->parent);
+		}
+		inline rbnode* getUncle() {
+			assert(this->parent);
+			if (this->parent && this->parent->isLeft()) {
+				return this->getGrandParent()->right;
+			}
+			if (this->parent && this->parent->isRight()) {
+				return this->getGrandParent()->left;
+			}
+		}
 
 		inline void setParent() {}
 		inline void setLeft() {}
@@ -125,10 +140,10 @@ namespace ft {
 			typedef typename node_allocator::reference						reference;
 			typedef typename node_allocator::const_reference				const_reference;
 
-			//typedef ft::rbtree_iterator<pointer>					iterator;
-			//typedef ft::rbtree_iterator<const_pointer>				const_iterator;
-			//typedef ft::rbtree_reverse_iterator<iterator>			reverse_iterator;
-			//typedef ft::rbtree_reverse_iterator<const_iterator>	const_reverse_iterator;
+			typedef ft::rbiterator<pointer, T>								iterator;
+			typedef ft::rbiterator<const_pointer, const T>					const_iterator;
+			typedef ft::reverse_iterator<iterator>							reverse_iterator;
+			typedef ft::reverse_iterator<const_iterator>					const_reverse_iterator;
 
 			// variables
 			pointer 	node_root;
@@ -148,10 +163,15 @@ namespace ft {
 
 				this->node_nil->setBlack;
 				this->node_nil->parent = this->node_nil;
-				this->node_nil->left = this->node_nil;
-				this->node_nil->right = this->node_nil;
 
 				this->node_root = this->node_nil;
+
+				//this->node_nil->left = this->node_nil;
+				this->node_nil->left = this->node_root;
+				//this->node_nil->right = this->node_nil;
+				this->node_nil->right = this->node_root;
+
+				this->node_root->parent = this->node_nil;
 			}
 			rbtree(const rbtree& other) {
 				*this = other;
@@ -177,11 +197,197 @@ namespace ft {
 					this->node_root = this->node_nil;
 				}
 			}
+
+			// insert
 			ft::pair<iterator, bool> insert(const value_type& content) {
-				;
+				if (this->node_root == this->node_nil) {
+					this->node_root = nodeCreate(content, this->node_nil);
+					++this->size;
+					this->node_root->parent = this->node_nil;
+					this->node_nil->left = this->node_root;
+					this->node_nil->right = this->node_root;
+					return ft::make_pair(iterator(this->node_root, this->node_root, this->node_nil), true);
+				}
+				pointer it = this->node_root;
+				while (it != this->node_nil) {
+					if (this->comp(it->data, content)) {
+						if (it->right == this->node_nil) break;
+						it = it->right;
+					} else if (this->comp(content, it->data)) {
+						if (it->left == this->node_nil) break;
+						it = it->left;
+					} else {
+						this->node_root->parent = this->node_nil;
+						this->node_nil->left = this->node_root;
+						this->node_nil->right = this->node_root;
+
+						return ft::make_pair(iterator(it, this->node_root, this->node_nil), false);
+					}
+				}
+				if (this->comp(it->data, content)) {
+					it->right = nodeCreate(content, it);
+					it = it->right;
+				} else if (this->comp(content, it->data)) {
+					it->left = nodeCreate(content, it);
+					it = it->left;
+				}
+				// nearby nodes
+				this->insertFix(it);
+				++this->size;
+				this->node_root->parent = this->node_nil;
+				this->node_nil->left = this->node_root;
+				this->node_nil->right = this->node_root;
+
+				return ft::make_pair(iterator(it, this->node_root, this->node_nil), true);
 			}
-			//TODO remove
-			//TODO empty
+			void insertFix(pointer node) {
+				if (node != this->node_root && node->isRed() && node->parent->isRed()) {
+					if (node->getUncle() && node->getUncle()->isRed()) {
+						// color
+						node->getUncle()->setBlack();
+						node->parent->setBlack();
+						node->getGrandParent()->setRed();
+						insertFix(node->getGrandParent());
+					} else if (node->parent != this->node_root && node->parent->isLeft()) {
+						// left
+						if (node->isRight()) {
+							this->rotateLeft(node->parent);
+							this->rotateRight(node->getGrandParent()); // ???
+							this->insertFix(node->getGrandParent()); // ???
+						} else {
+							this->rotateRight(node->getGrandParent());
+							this->swapColor(node->parent, node->getGrandParent());
+							insertFix(node->parent);
+						}
+					} else if (node->parent != this->node_root && node->parent->isRight()) {
+						// right
+						if (node->isLeft()) {
+							this->rotateRight(node->parent);
+							this->rotateLeft(node->getGrandParent()); // ???
+							this->insertFix(node->getGrandParent()); // ???
+						} else {
+							this->rotateLeft(node->getGrandParent());
+							this->swapColor(node->parent, node->getGrandParent());
+							this->insertFix(node->parent);
+						}
+					}
+				}
+				this->node_root->setBlack();
+				this->node_root->parent = this->node_nil;
+				this->node_nil->left = this->node_root;
+				this->node_nil->right = this->node_root;
+			}
+			// remove
+			void remove(const value_type& content) {
+				pointer it = this->node_root;
+				pointer save;
+				while (it != this->node_nil
+						&& (this->comp(it->data, content) || this->comp(content, it->data))) {
+					if (this->comp(it->data, content)) {
+						it = it->right;
+					} else if (this->comp(content, it->data)) {
+						it = it->left;
+					}
+				}
+				if (it == this->node_nil) return;
+
+				bool color = it->color;
+				if (it->left == this->node_nil) {
+					save = it->right;
+					this->nodeReplace(it, it->right);
+				} else if (it->right == this->node_nil) {
+					save = it->left;
+					this->nodeReplace(it, it->left);
+				} else {
+					pointer aux = it->right;
+					while (aux->left != this->node_nil) {
+						aux = aux->left;
+					}
+					color = aux->color;
+					save = aux->right;
+					if (aux->parent == it) {
+						aux->right->parent = aux;
+					} else {
+						this->nodeReplace(aux, aux->right);
+						aux->right = it->right;
+						aux->right->parent = aux;
+					}
+					this->nodeReplace(it, aux);
+					aux->left = it->left;
+					aux->left->parent = aux;
+					aux->color = it->color;
+				}
+				--this->size;
+				this->node_alloc.destroy(it);
+				this->node_alloc.deallocate(it, 1);
+				//if (color == node_type::e_color::BLACK) removeFix(save);
+				if (color == node_type::e_color::BLACK) {
+					pointer aux;
+					while (save->parent != this->node_nil && save->isBlack()) {
+						if (save->isLeft()) {
+							aux = save->parent->right;
+							if (aux->isRed()) {
+								aux->setBlack();
+								save->parent->setRed();
+								this->rotateLeft(save->parent);
+								aux = save->parent->right;
+							}
+
+							if (aux->right->isBlack() && aux->left->isBlack()) {
+								aux->setRed();
+								save = save->parent;
+							} else {
+								if (aux->right->isBlack()) {
+									aux->left->setBlack();
+									aux->setRed();
+									this->rotateRight(aux);
+									aux = save->parent->right;
+								}
+								aux->color = save->parent->color;
+								save->parent->setBlack();
+								aux->right->setBlack();
+								this->rotateLeft(save->parent);
+								save = this->node_root;
+							}
+						} else {
+							aux = save->parent->left;
+							if (aux->isRed()) {
+								aux->setBlack();
+								save->parent->setRed();
+								this->rotateRight(save->parent);
+								aux = save->parent->left;
+							}
+
+							if (aux->right->isBlack() && aux->left->isBlack()) {
+								aux->setRed();
+								save = save->parent;
+							} else {
+								if (aux->left->isBlack()) {
+									aux->right->setBlack();
+									aux->setRed();
+									this->rotateLeft(aux);
+									aux = save->parent->left;
+								}
+								aux->color = save->parent->color;
+								save->parent->setBlack();
+								aux->left->setBlack();
+								this->rotateRight(save->parent);
+								save = this->node_root;
+							}
+						}
+					}
+					save->color->setBlack();
+				}
+			}
+			void nodeReplace(pointer oldNode, pointer newNode) {
+				if (oldNode->parent == this->node_nil) this->node_root = newNode;
+				else if (oldNode->isLeft()) oldNode->parent->left = newNode;
+				else oldNode->parent->right = newNode;
+				newNode->parent = oldNode->parent;
+			}
+
+			bool empty() const { return this->size == 0; }
+
 			//TODO swap ???
 			pointer min() const {
 				pointer it = this->node_root;
@@ -264,10 +470,15 @@ namespace ft {
 			//TODO replace ???
 
 			// iterator
-			//TODO begin
-			//TODO end
-			//TODO rbegin
-			//TODO rend
+			iterator		begin() { return iterator(this->min(), this->node_root, this->node_nil); }
+			iterator		end() { return iterator(this->node_nil, this->node_root, this->node_nil); }
+			const_iterator	begin() const { return const_iterator(this->min(), this->node_root, this->node_nil); }
+			const_iterator	end() const { return const_iterator(this->node_nil, this->node_root, this->node_nil); }
+
+			reverse_iterator		rbegin() { return reverse_iterator(end()); }
+			reverse_iterator		rend() { return reverse_iterator(begin()); }
+			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
+			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
 
 			//TODO debug (print all tree)
 

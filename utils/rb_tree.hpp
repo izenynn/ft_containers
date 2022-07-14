@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 17:25:14 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 17:55:42 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "pair.hpp"
 # include "rb_iterator.hpp"
 # include "reverse_iterator.hpp"
+# include "swap.hpp"
 
 namespace ft {
 	template<class T>
@@ -391,7 +392,14 @@ namespace ft {
 
 			bool empty() const { return this->size == 0; }
 
-			//TODO swap ??? (and = constructor and assing)
+			void swap(rbtree& other) {
+				ft::swap(this->node_root, other.node_root);
+				ft::swap(this->node_nil, other.node_nil);
+				ft::swap(this->size, other.size);
+				ft::swap(this->node_alloc, other.node_alloc);
+				ft::swap(this->comp, other.comp);
+			}
+
 			pointer min() const {
 				pointer it = this->node_root;
 				if (it == this->node_nil) return it;

@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 11:00:12 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 21:13:00 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 23:12:02 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,7 @@ namespace ft {
 	template<class U1, class T1>
 	rbiterator<U1, T1>
 	operator+(typename ft::rbiterator<U1, T1>::difference_type n, const ft::rbiterator<U1, T1>& rhs) {
-		return ft::rbiterator<U1, T1>(rhs.getCurrent() + n);
+		return (ft::rbiterator<U1, T1>)(rhs.getCurrent() + n);
 	}
 }
 

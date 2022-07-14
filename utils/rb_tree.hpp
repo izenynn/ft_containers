@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 20:37:47 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 01:08:53 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ namespace ft {
 			pointer		node_nil;
 			size_type	size;
 
-			Compare		comp;
+			compare		comp;
 
 			allocator_type	alloc;
 			node_allocator	node_alloc;
@@ -222,6 +222,13 @@ namespace ft {
 
 			// insert
 			ft::pair<iterator, bool> insert(const value_type& content) {
+				pair<iterator, bool> ret = nodeInsert(content);
+				this->node_root->parent = this->node_nil;
+				this->node_nil->left = this->node_root;
+				this->node_nil->right = this->node_root;
+				return ret;
+			}
+			ft::pair<iterator, bool> nodeInsert(const value_type& content) {
 				if (this->node_root == this->node_nil) {
 					this->node_root = nodeCreate(content, this->node_nil);
 					++this->size;
@@ -229,42 +236,45 @@ namespace ft {
 					this->node_nil->left = this->node_root;
 					this->node_nil->right = this->node_root;
 					return ft::make_pair(iterator(this->node_root, this->node_root, this->node_nil), true);
-				}
-				pointer it = this->node_root;
-				while (it != this->node_nil) {
+				} else {
+					pointer it = this->node_root;
+					//while (it) {
+					while (it != this->node_nil) {
+						if (this->comp(it->data, content)) {
+							if (it->right == this->node_nil) break;
+							it = it->right;
+						} else if (this->comp(content, it->data)) {
+							if (it->left == this->node_nil) break;
+							it = it->left;
+						} else {
+							this->node_root->parent = this->node_nil;
+							this->node_nil->left = this->node_root;
+							this->node_nil->right = this->node_root;
+
+							return ft::make_pair(iterator(it, this->node_root, this->node_nil), false);
+						}
+					}
 					if (this->comp(it->data, content)) {
-						if (it->right == this->node_nil) break;
+						it->right = nodeCreate(content, it);
 						it = it->right;
 					} else if (this->comp(content, it->data)) {
-						if (it->left == this->node_nil) break;
+						it->left = nodeCreate(content, it);
 						it = it->left;
-					} else {
-						this->node_root->parent = this->node_nil;
-						this->node_nil->left = this->node_root;
-						this->node_nil->right = this->node_root;
-
-						return ft::make_pair(iterator(it, this->node_root, this->node_nil), false);
 					}
-				}
-				if (this->comp(it->data, content)) {
-					it->right = nodeCreate(content, it);
-					it = it->right;
-				} else if (this->comp(content, it->data)) {
-					it->left = nodeCreate(content, it);
-					it = it->left;
-				}
-				// nearby nodes
-				this->insertFix(it);
-				++this->size;
-				this->node_root->parent = this->node_nil;
-				this->node_nil->left = this->node_root;
-				this->node_nil->right = this->node_root;
+					// nearby nodes
+					this->insertFix(it);
+					++this->size;
+					this->node_root->parent = this->node_nil;
+					this->node_nil->left = this->node_root;
+					this->node_nil->right = this->node_root;
 
-				return ft::make_pair(iterator(it, this->node_root, this->node_nil), true);
+					return ft::make_pair(iterator(it, this->node_root, this->node_nil), true);
+				}
 			}
+#include <iostream>
 			void insertFix(pointer node) {
 				if (node != this->node_root && node->isRed() && node->parent->isRed()) {
-					if (node->getUncle() && node->getUncle()->isRed()) {
+					if (node->getUncle() != ft::nullptr_t && node->getUncle()->isRed()) {
 						// color
 						node->getUncle()->setBlack();
 						node->parent->setBlack();
@@ -272,25 +282,30 @@ namespace ft {
 						insertFix(node->getGrandParent());
 					} else if (node->parent != this->node_root && node->parent->isLeft()) {
 						// left
+						pointer parent = node->parent;
+						pointer grandpa = node->getGrandParent();
 						if (node->isRight()) {
-							this->rotateLeft(node->parent);
-							this->rotateRight(node->getGrandParent()); // ???
-							this->insertFix(node->getGrandParent()); // ???
+							this->rotateLeft(parent);
+							this->rotateRight(grandpa); // ???
+							this->insertFix(grandpa); // ???
 						} else {
-							this->rotateRight(node->getGrandParent());
-							this->swapColor(node->parent, node->getGrandParent());
-							insertFix(node->parent);
+							this->rotateRight(grandpa);
+							this->swapColor(parent, grandpa);
+							this->insertFix(parent);
 						}
+
 					} else if (node->parent != this->node_root && node->parent->isRight()) {
 						// right
+						pointer parent = node->parent;
+						pointer grandpa = node->getGrandParent();
 						if (node->isLeft()) {
-							this->rotateRight(node->parent);
-							this->rotateLeft(node->getGrandParent()); // ???
-							this->insertFix(node->getGrandParent()); // ???
+							this->rotateRight(parent);
+							this->rotateLeft(grandpa); // ???
+							this->insertFix(grandpa); // ???
 						} else {
-							this->rotateLeft(node->getGrandParent());
-							this->swapColor(node->parent, node->getGrandParent());
-							this->insertFix(node->parent);
+							this->rotateLeft(grandpa);
+							this->swapColor(parent, grandpa);
+							this->insertFix(parent);
 						}
 					}
 				}
@@ -305,12 +320,12 @@ namespace ft {
 				this->node_root->parent = this->node_nil;
 				this->node_nil->left = this->node_root;
 				this->node_nil->right = this->node_root;
-
 			}
 
 			void nodeRemove(const value_type& content) {
 				pointer it = this->node_root;
 				pointer save;
+				// itera este while de mas, 8 veces en vez de 2
 				while (it != this->node_nil
 						&& (this->comp(it->data, content) || this->comp(content, it->data))) {
 					if (this->comp(it->data, content)) {
@@ -336,7 +351,7 @@ namespace ft {
 					color = aux->color;
 					save = aux->right;
 					if (aux->parent == it) {
-						aux->right->parent = aux;
+						save->parent = aux;
 					} else {
 						this->nodeReplace(aux, aux->right);
 						aux->right = it->right;
@@ -504,7 +519,6 @@ namespace ft {
 				n1->color = n2->color;
 				n2->color = aux;
 			}
-			//TODO replace ???
 
 			// iterator
 			iterator		begin() { return iterator(this->min(), this->node_root, this->node_nil); }

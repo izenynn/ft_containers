@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 21:16:04 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 00:50:50 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,9 +145,9 @@ namespace ft {
 			void erase(iterator pos) {
 				this->_tree.remove(*pos);
 			}
-			void erase(iterator first, iterator last) {
-				for (iterator it = first; it != last; ++it) {
-					this->_tree.remove(*it);
+			void erase(iterator first, iterator last) { // FIXME not working
+				for (iterator it = first; it != last;) {
+					this->_tree.remove(*(it++));
 				}
 			}
 			size_type erase(const key_type& key) {

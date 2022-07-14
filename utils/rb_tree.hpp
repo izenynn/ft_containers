@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 20:11:52 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:37:47 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,36 +35,36 @@ namespace ft {
 		static const bool BLACK = false;
 
 		// family
-		rbnode*		parent;
 		rbnode*		left;
 		rbnode*		right;
+		rbnode*		parent;
 
 		// node content
-		bool		color;
 		value_type	data;
+		bool		color;
 
 		// constructors
 		//node() : color(k_red) {}
 
 		rbnode(const value_type& value)
-		: parent(ft::nullptr_t),
-		  left(ft::nullptr_t),
+		: left(ft::nullptr_t),
 		  right(ft::nullptr_t),
-		  color(rbnode::BLACK),
-		  data(value) {}
+		  parent(ft::nullptr_t),
+		  data(value),
+		  color(rbnode::BLACK) {}
 		rbnode(const value_type& value, rbnode* nil)
-		: parent(nil),
-		  left(nil),
+		: left(nil),
 		  right(nil),
-		  color(rbnode::BLACK),
-		  data(value) {}
+		  parent(nil),
+		  data(value),
+		  color(rbnode::BLACK) {}
 
 		rbnode(const rbnode& other)
-		: parent(other.parent),
-		  left(other.left),
+		: left(other.left),
 		  right(other.right),
-		  color(other.color),
-		  data(other.data) {}
+		  parent(other.parent),
+		  data(other.data),
+		  color(other.color) {}
 
 		~rbnode() {}
 
@@ -119,10 +119,6 @@ namespace ft {
 			}
 			return ft::nullptr_t;
 		}
-
-		inline void setParent() {}
-		inline void setLeft() {}
-		inline void setRight() {}
 	};
 
 	//template<class T, class Compare, class Allocator>

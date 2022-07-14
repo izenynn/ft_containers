@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 11:00:12 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 18:23:56 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 21:13:00 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,16 @@ namespace ft {
 		public:
 			// typedefs
 			typedef T											value_type;
-			//typedef std::ptrdiff_t								difference_type;
+			typedef Node										node_pointer; //
+			typedef std::ptrdiff_t								difference_type; //
 			typedef value_type&									reference;
 			typedef value_type*									pointer;
 
-			typedef typename ft::iterator_traits<Node>::value_type		node_type;
-			typedef typename ft::iterator_traits<Node>::difference_type	difference_type;
-			typedef typename ft::iterator_traits<Node>::reference		node_reference;
-			typedef typename ft::iterator_traits<Node>::pointer			node_pointer;
+			//typedef typename ft::iterator_traits<Node>::value_type		node_type;
+			//typedef typename ft::iterator_traits<Node>::difference_type	difference_type;
+			//typedef typename ft::iterator_traits<Node>::reference		node_reference;
+			//typedef typename ft::iterator_traits<Node>::pointer			node_pointer;
+
 			typedef typename std::bidirectional_iterator_tag			iterator_category;
 
 			// constructors
@@ -36,9 +38,9 @@ namespace ft {
 
 			template<class U, class T1>
 			rbiterator(const rbiterator<U, T1>& other) {
-				this->_current = other._current;
-				this->_root = other._root;
-				this->_nil = other._nil;
+				this->_current = other.getCurrent();
+				this->_root = other.getRoot();
+				this->_nil = other.getNil();
 			}
 
 			explicit
@@ -52,9 +54,9 @@ namespace ft {
 			// assign operator
 			template<class U, class T1>
 			rbiterator& operator=(const rbiterator<U, T1>& other) {
-				this->_current = other._current;
-				this->_root = other._root;
-				this->_nil = other._nil;
+				this->_current = other.getCurrent();
+				this->_root = other.getRoot();
+				this->_nil = other.getNil();
 				return *this;
 			}
 

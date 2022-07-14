@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 20:00:13 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 21:16:04 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,14 +173,14 @@ namespace ft {
 			iterator find(const key_type& key) {
 				node_pointer res = this->_tree.find(ft::make_pair(key, mapped_type()));
 				if (res != ft::nullptr_t) {
-					return iterator(res, this->_tree.getRoot(), this->_tree.getNil());
+					return iterator(res, this->_tree.getNodeRoot(), this->_tree.getNodeNil());
 				}
 				return this->end();
 			}
 			const_iterator find(const key_type& key) const {
 				node_pointer res = this->_tree.find(ft::make_pair(key, mapped_type()));
 				if (res != ft::nullptr_t) {
-					return iterator(res, this->_tree.getRoot(), this->_tree.getNil());
+					return iterator(res, this->_tree.getNodeRoot(), this->_tree.getNodeNil());
 				}
 				return this->end();
 			}

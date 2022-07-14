@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 19:31:48 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 19:38:24 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,17 @@ namespace ft {
 		//node() : color(k_red) {}
 
 		rbnode(const value_type& value)
-		: color(rbnode::BLACK),
-		  data(value),
-		  parent(ft::nullptr_t),
+		: parent(ft::nullptr_t),
 		  left(ft::nullptr_t),
-		  right(ft::nullptr_t) {}
+		  right(ft::nullptr_t),
+		  color(rbnode::BLACK),
+		  data(value) {}
 		rbnode(const value_type& value, rbnode* nil)
-		: color(rbnode::BLACK),
-		  data(value),
-		  parent(nil),
+		: parent(nil),
 		  left(nil),
-		  right(nil) {}
+		  right(nil),
+		  color(rbnode::BLACK),
+		  data(value) {}
 
 		rbnode(const rbnode& other)
 		: parent(other.parent),

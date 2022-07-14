@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 19:59:17 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/14 20:11:52 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,9 @@ namespace ft {
 		}*/
 
 		inline bool isLeft() {
-			assert(this->parent->left == this);
 			return this->parent->left == this;
 		}
 		inline bool isRight() {
-			assert(this->parent->right == this);
 			return this->parent->right == this;
 		}
 
@@ -102,26 +100,24 @@ namespace ft {
 
 		inline rbnode* getBrother() {
 			if (this->parent == ft::nullptr_t) return ft::nullptr_t;
-
-			assert(this->parent->left == this
-					|| this->parent->right == this);
 			return (this->parent->left == this
 					? this->parent->left
 					: this->parent->right);
 		}
 		inline rbnode* getGrandParent() {
-			assert(this->parent && this->parent->parent);
-			return(this->parent->parent);
+			if (this->parent != ft::nullptr_t && this->parent->parent != ft::nullptr_t) {
+				return(this->parent->parent);
+			}
+			return ft::nullptr_t;
 		}
 		inline rbnode* getUncle() {
-			assert(this->parent);
-			if (this->parent && this->parent->isLeft()) {
+			if (this->parent != ft::nullptr_t && this->parent->isLeft()) {
 				return this->getGrandParent()->right;
 			}
-			if (this->parent && this->parent->isRight()) {
+			if (this->parent != ft::nullptr_t && this->parent->isRight()) {
 				return this->getGrandParent()->left;
 			}
-			return (ft::nullptr_t);
+			return ft::nullptr_t;
 		}
 
 		inline void setParent() {}

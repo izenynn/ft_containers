@@ -81,7 +81,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
-# tester
-.tester
-**/.tester

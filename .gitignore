@@ -85,3 +85,5 @@ dkms.conf
 # .tester logs
 .tester/logs/
 **/.tester/logs/
+containers_test/
+**/containers_test/

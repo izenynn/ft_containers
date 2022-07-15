@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rb_iterator.hpp                                    :+:      :+:    :+:   */
+/*   rbiterator.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 11:00:12 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 01:43:24 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 15:17:13 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RB_ITERATOR_HPP_
-# define RB_ITERATOR_HPP_
+#ifndef RBITERATOR_HPP_
+# define RBITERATOR_HPP_
 
 # include "iterator_traits.hpp"
 

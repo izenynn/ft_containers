@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 00:50:50 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 02:09:30 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ namespace ft {
 			typedef node_type*								node_pointer;
 			typedef node_type&								node_reference;
 
-			typedef typename Allocator::size_type			size_type;
-			typedef typename Allocator::difference_type		difference_type;
+			typedef typename allocator_type::size_type			size_type;
+			typedef typename allocator_type::difference_type		difference_type;
 
-			typedef typename Allocator::reference			reference;
-			typedef typename Allocator::const_reference		const_reference;
-			typedef typename Allocator::pointer				pointer;
-			typedef typename Allocator::const_pointer		const_pointer;
+			typedef typename allocator_type::reference			reference;
+			typedef typename allocator_type::const_reference		const_reference;
+			typedef typename allocator_type::pointer				pointer;
+			typedef typename allocator_type::const_pointer		const_pointer;
 
 			class value_compare {
 				public:
@@ -201,7 +201,7 @@ namespace ft {
 				return this->end();
 			}
 			const_iterator lower_bound(const key_type& key) const {
-				for (iterator it = this->begin(); it != this->end(); ++it) {
+				for (const_iterator it = this->begin(); it != this->end(); ++it) {
 					if(this->_value_comp(ft::make_pair(key, mapped_type()), it.getCurrent()->data)
 							|| !(this->_value_comp(it.getCurrent()->data, ft::make_pair(key, mapped_type()))))
 						return it;
@@ -218,7 +218,7 @@ namespace ft {
 				return this->end();
 			}
 			const_iterator upper_bound(const key_type& key) const {
-				for (iterator it = this->begin(); it != this->end(); ++it) {
+				for (const_iterator it = this->begin(); it != this->end(); ++it) {
 					if(this->_value_comp(ft::make_pair(key, mapped_type()), it.getCurrent()->data)) {
 						return it;
 					}

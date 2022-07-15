@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/14 11:00:12 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/14 23:12:02 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 01:43:24 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ namespace ft {
 		public:
 			// typedefs
 			typedef T											value_type;
-			typedef Node										node_pointer; //
-			typedef std::ptrdiff_t								difference_type; //
+			//typedef Node										node_pointer; //
+			//typedef std::ptrdiff_t								difference_type; //
 			typedef value_type&									reference;
 			typedef value_type*									pointer;
 
-			//typedef typename ft::iterator_traits<Node>::value_type		node_type;
-			//typedef typename ft::iterator_traits<Node>::difference_type	difference_type;
-			//typedef typename ft::iterator_traits<Node>::reference		node_reference;
-			//typedef typename ft::iterator_traits<Node>::pointer			node_pointer;
+			typedef typename ft::iterator_traits<Node>::value_type		node_type;
+			typedef typename ft::iterator_traits<Node>::difference_type	difference_type;
+			typedef typename ft::iterator_traits<Node>::reference		node_reference;
+			typedef typename ft::iterator_traits<Node>::pointer			node_pointer;
 
 			typedef typename std::bidirectional_iterator_tag			iterator_category;
 
@@ -110,6 +110,7 @@ namespace ft {
 				operator--();
 				return aux;
 			}
+
 		protected:
 			node_pointer _current;
 			node_pointer _root;

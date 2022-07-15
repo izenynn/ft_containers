@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 01:08:53 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 01:47:17 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include <memory>
 # include <functional> // std::less
-# include <cassert> // assert()
 
 # include "nullptr_t.hpp"
 # include "pair.hpp"
@@ -52,19 +51,19 @@ namespace ft {
 		  parent(ft::nullptr_t),
 		  data(value),
 		  color(rbnode::BLACK) {}
-		rbnode(const value_type& value, rbnode* nil)
-		: left(nil),
-		  right(nil),
-		  parent(nil),
-		  data(value),
-		  color(rbnode::BLACK) {}
+		//rbnode(const value_type& value, rbnode* nil)
+		//: left(nil),
+		//  right(nil),
+		//  parent(nil),
+		//  data(value),
+		//  color(rbnode::BLACK) {}
 
-		rbnode(const rbnode& other)
-		: left(other.left),
-		  right(other.right),
-		  parent(other.parent),
-		  data(other.data),
-		  color(other.color) {}
+		//rbnode(const rbnode& other)
+		//: left(other.left),
+		//  right(other.right),
+		//  parent(other.parent),
+		//  data(other.data),
+		//  color(other.color) {}
 
 		~rbnode() {}
 
@@ -534,7 +533,7 @@ namespace ft {
 			//TODO debug (print all tree)
 
 		private:
-			// i mean, no, i don't need this and i don't wanna implement it
+			// i mean, no, i don't need this and i don't wanna implement it (>.<)
 			rbtree& operator=(const rbtree& other) {
 				(void)other;
 			}

@@ -12,7 +12,7 @@ CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=addre
 #CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
 #CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3"
 
-SRC="main.cpp"
+SRC="srcs/main.cpp"
 
 LOG_DIR="logs"
 STDLOG_FILE="std.log"

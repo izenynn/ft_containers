@@ -1,18 +1,4 @@
-#include <iostream>
-#include <string>
-#include <deque>
-#ifndef FT //CREATE A REAL STL EXAMPLE
-	#include <map>
-	#include <stack>
-	#include <vector>
-	namespace ft = std;
-#else
-	#include "../map.hpp"
-	#include "../stack.hpp"
-	#include "../vector.hpp"
-#endif
-
-#include <stdlib.h>
+#include "../inc/tester.hpp"
 
 #define MAX_RAM 4294967296
 #define BUFFER_SIZE 4096

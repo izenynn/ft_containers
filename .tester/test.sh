@@ -20,34 +20,38 @@ LOG_DIR="logs"
 STDLOG_FILE="std.log"
 FTLOG_FILE="ft.log"
 DIFF_FILE="diff.log"
+TIME_FILE="time.log"
 
 echo -e "\n=============================================================="
-echo -e "\n>>> STARTING..."
+echo -e "\n>>> STARTING TESTS..."
 rm -rf ./"$LOG_DIR"
 mkdir ./"$LOG_DIR" 2> /dev/null
 
-echo -e "\n>>> RUNNING STL"
+echo -e "\n>>> RUNNING STL TESTS..."
 "$CC" $CFLAGS -o "$NAME" $SRC
 ./"$NAME" > "./$LOG_DIR/$STDLOG_FILE" 2>&1
+echo "STD:" > "./$LOG_DIR/$TIME_FILE"
+\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" > /dev/null 2>&1
 rm "$NAME"
 
-echo -e "\n>>> RUNNING FT"
+echo -e "\n>>> RUNNING FT TESTS..."
 "$CC" $CFLAGS -o "$NAME" -D "FT" $SRC
 ./"$NAME" > "./$LOG_DIR/$FTLOG_FILE" 2>&1
+echo "FT:" >> "./$LOG_DIR/$TIME_FILE"
+\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" > /dev/null 2>&1
 rm "$NAME"
 
 echo -e "\n=============================================================="
-echo -e "\n>>> RESULTS"
+echo -e "\n>>> FUNCTIONALITY RESULTS"
 diff "./$LOG_DIR/$FTLOG_FILE" "./$LOG_DIR/$STDLOG_FILE" 2> /dev/null > "./$LOG_DIR/$DIFF_FILE"
 cat "./$LOG_DIR/$DIFF_FILE"
 
+# test results
 if ! [[ -s ./$LOG_DIR/$DIFF_FILE ]]; then
-	echo -e "\n=============================================================="
 	echo "✅ PERFECT! \\(^O^)/"
-	echo -e "=============================================================="
-	exit 0
-fi
-regex=$(cat <<- EOF
+	ret="0"
+else
+	regex=$(cat <<- EOF
 ^[0-9]*c[0-9]*
 < max_size: [0-9]*
 ---
@@ -55,10 +59,15 @@ regex=$(cat <<- EOF
 EOF
 )
 
-# finished
+	cat "./$LOG_DIR/$DIFF_FILE" | grep -v -E -q "$regex"
+	res="$?"
+	[ "$res" -eq "0" ] && (echo "❌ KO (T.T)"; ret="1") || (echo "⚠️ OK!  (^.^)"; ret="0")
+fi
+
+# time results
 echo -e "\n=============================================================="
-cat "./$LOG_DIR/$DIFF_FILE" | grep -v -E -q "$regex"
-res="$?"
-[ "$res" -eq "0" ] && echo "❌ KO (T.T)" || echo "⚠️  OK!  (^.^)"
-echo -e "=============================================================="
-[ "$res" -eq "0" ] && exit 1 || exit 0
+echo -e "\n>>> TIME RESULTS"
+cat "./$LOG_DIR/$TIME_FILE"
+
+# exit
+exit "$ret"

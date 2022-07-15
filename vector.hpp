@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 08:46:04 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/15 19:10:34 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,15 +213,15 @@ namespace ft {
 					//for (; aux1 != aux2; ++aux1) ++offset;
 					//
 					size_type offset = position - this->begin();
-					this->reserve(this->_size + 1);
+					this->reserve((this->_size + 1) * 2);
 					position = this->begin() + offset;
 				}
 				for (iterator it = this->end(); it > position; --it) {
 					this->_alloc.construct(it.base(), *(it - 1)); // [!] SEGV on unknown address
 					//this->_alloc.destroy(it.base() + 1); // TODO don't know if it's neccesary
 				}
-				this->_alloc.construct(position.base(), x);
-				++(this->_size);
+				this->_alloc.construct(position.base(), x); // this shit SEGFAULTS
+				++(this->_size); // this shit also SEGFAULTS
 				return (position);
 
 				//if (this->_size == this->_capacity) {

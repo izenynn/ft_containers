@@ -27,16 +27,16 @@ mkdir ./"$LOG_DIR" 2> /dev/null
 
 echo -e "\n>>> RUNNING STL TESTS..."
 "$CC" $CFLAGS -o "$NAME" $SRC
-./"$NAME" > "./$LOG_DIR/$STDLOG_FILE" 2>&1
+./"$NAME" $@ > "./$LOG_DIR/$STDLOG_FILE" 2>&1
 echo "STD:" > "./$LOG_DIR/$TIME_FILE"
-\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" > /dev/null 2>&1
+\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" $@ > /dev/null 2>&1
 rm "$NAME"
 
 echo -e "\n>>> RUNNING FT TESTS..."
 "$CC" $CFLAGS -o "$NAME" -D "FT" $SRC
-./"$NAME" > "./$LOG_DIR/$FTLOG_FILE" 2>&1
+./"$NAME" $@ > "./$LOG_DIR/$FTLOG_FILE" 2>&1
 echo "FT:" >> "./$LOG_DIR/$TIME_FILE"
-\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" > /dev/null 2>&1
+\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" $@ > /dev/null 2>&1
 rm "$NAME"
 
 echo -e "\n=============================================================="

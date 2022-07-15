@@ -9,9 +9,7 @@ CC="g++"
 #CC="clang++"
 
 CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-
 #CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-
 #CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3"
 
 SRC="main.cpp"

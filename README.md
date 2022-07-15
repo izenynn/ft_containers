@@ -4,16 +4,16 @@
 
 Re-implementation of some c++ containers.
 
-- Status: on going
-- Result: n/a
-- Observations: the standard used is c++98
+- Status: finished
+- Result: pending
+- Observations: the standard used is `c++98`, `map` and `set` use a red-black tree.
 
 ## Containers
 
 - [x] c++98 stack
 - [x] c++98 vector
-- [ ] c++98 map (using a red-black tree)
-- [ ] c++98 set
+- [x] c++98 map
+- [x] c++98 set
 
 ## How to use
 

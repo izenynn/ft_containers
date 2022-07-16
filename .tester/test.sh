@@ -5,26 +5,33 @@ CC="g++"
 #CC="clang++"
 
 # flags
-CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-#CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-#CFLAGS="-std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3"
+CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
+#CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
+#CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3"
 
 # src
 SRC_DIR="./srcs"
 INC_DIR="./inc"
 
 # includes
-CFLAGS+="-I ./inc"
+CFLAGS+=" -I ./inc"
 
 # tester variables
 LOG_DIR="./logs"
 
 function test-cpp() {
 	# $1 test name
-	# $3 test .cpp file
+	# $2 test container name
+	# $3 test .cpp file name
+
+	if [[ -z $3 ]]; then
+		echo "[ERROR]: function test-cpp(): not enought arguments provided"
+		exit 1
+	fi
+
 	NAME="test.out"
 
-	SRC="srcs/main.cpp"
+	SRC="$SRC_DIR/$2/$3"
 	
 	LOG_DIR="logs"
 	STDLOG_FILE="std.log"
@@ -88,9 +95,10 @@ function test-container() {
 
 	if [[ -z $2 ]]; then
 		echo "[ERROR]: function test-container(): not enought arguments provided"
+		exit 1
 	fi
 	for (( j=1; j<argc; j++ )); do
-		echo "${argv[j]}"
+		test-cpp "intra test" $1 ${argv[j]}
 	done
 
 	# TODO make all .cpp test, iterate $@ and call test-cpp

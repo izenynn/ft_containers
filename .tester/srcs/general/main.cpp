@@ -31,14 +31,16 @@ public:
 };
 
 int main(int argc, char** argv) {
-	if (argc != 2)
+	(void)argc; (void)argv;
+	/*if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;
 		std::cerr << "Provide a seed please" << std::endl;
 		std::cerr << "Count value:" << COUNT << std::endl;
 		return 1;
 	}
-	const int seed = atoi(argv[1]);
+	const int seed = atoi(argv[1]);*/
+	const int seed = 5;
 	srand(seed);
 
 	ft::vector<std::string> vector_str;

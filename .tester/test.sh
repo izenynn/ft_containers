@@ -20,24 +20,23 @@ CFLAGS+=" -I ./inc"
 LOG_DIR="./logs"
 
 function test-cpp() {
-	# $1 test name
-	# $2 test container name
-	# $3 test .cpp file name
+	# $1 test container name
+	# $2 test .cpp file name
+	# $3 optional argument for test program
 
-	if [[ -z $3 ]]; then
+	if [[ -z $2 ]]; then
 		echo "[ERROR]: function test-cpp(): not enought arguments provided"
 		exit 1
 	fi
 
-	NAME="test.out"
+	name="test.out"
 
-	SRC="$SRC_DIR/$2/$3"
+	src="$SRC_DIR/$1/$2"
 	
-	LOG_DIR="logs"
-	STDLOG_FILE="std.log"
-	FTLOG_FILE="ft.log"
-	DIFF_FILE="diff.log"
-	TIME_FILE="time.log"
+	std_log="std"".$1"".${2%.*}"".log"
+	ft_log="ft"".$1"".${2%.*}"".log"
+	diff_log="diff"".$1"".${2%.*}"".log"
+	time_log="time"".$1"".${2%.*}"".log"
 	
 	echo -e "\n=============================================================="
 	echo -e "\n>>> STARTING TESTS..."
@@ -45,38 +44,38 @@ function test-cpp() {
 	mkdir ./"$LOG_DIR" 2> /dev/null
 	
 	echo -e "\n>>> RUNNING STL TESTS..."
-	"$CC" $CFLAGS -o "$NAME" $SRC
-	./"$NAME" $@ > "./$LOG_DIR/$STDLOG_FILE" 2>&1
-	echo "STD:" > "./$LOG_DIR/$TIME_FILE"
-	\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" $@ > /dev/null 2>&1
-	rm "$NAME"
+	"$CC" $CFLAGS -o "$name" $src
+	./"$name" $3 > "./$LOG_DIR/$std_log" 2>&1
+	echo "STD:" > "./$LOG_DIR/$time_log"
+	\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	rm "$name"
 	
 	echo -e "\n>>> RUNNING FT TESTS..."
-	"$CC" $CFLAGS -o "$NAME" -D "FT" $SRC
-	./"$NAME" $@ > "./$LOG_DIR/$FTLOG_FILE" 2>&1
-	echo "FT:" >> "./$LOG_DIR/$TIME_FILE"
-	\time -p -a -o "./$LOG_DIR/$TIME_FILE" ./"$NAME" $@ > /dev/null 2>&1
-	rm "$NAME"
+	"$CC" $CFLAGS -o "$name" -D "FT" $src
+	./"$name" $3 > "./$LOG_DIR/$ft_log" 2>&1
+	echo "FT:" >> "./$LOG_DIR/$time_log"
+	\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	rm "$name"
 	
 	echo -e "\n=============================================================="
 	echo -e "\n>>> FUNCTIONALITY RESULTS"
-	diff "./$LOG_DIR/$FTLOG_FILE" "./$LOG_DIR/$STDLOG_FILE" 2> /dev/null > "./$LOG_DIR/$DIFF_FILE"
-	cat "./$LOG_DIR/$DIFF_FILE"
+	diff "./$LOG_DIR/$ft_log" "./$LOG_DIR/$std_log" 2> /dev/null > "./$LOG_DIR/$diff_log"
+	cat "./$LOG_DIR/$diff_log"
 	
 	# test results
-	if ! [[ -s ./$LOG_DIR/$DIFF_FILE ]]; then
+	if ! [[ -s ./$LOG_DIR/$diff_log ]]; then
 		echo "✅ PERFECT! \\(^O^)/"
 		ret="0"
 	else
 		regex=$(cat <<- EOF
-	^[0-9]*c[0-9]*
-	< max_size: [0-9]*
-	---
-	> max_size: [0-9]*$
-	EOF
-	)
+^[0-9]*c[0-9]*
+< max_size: [0-9]*
+---
+> max_size: [0-9]*$
+EOF
+)
 	
-		cat "./$LOG_DIR/$DIFF_FILE" | grep -v -E -q "$regex"
+		cat "./$LOG_DIR/$diff_log" | grep -v -E -q "$regex"
 		res="$?"
 		[ "$res" -eq "0" ] && (echo "❌ KO (T.T)"; ret="1") || (echo "⚠️ OK!  (^.^)"; ret="0")
 	fi
@@ -98,10 +97,8 @@ function test-container() {
 		exit 1
 	fi
 	for (( j=1; j<argc; j++ )); do
-		test-cpp "intra test" $1 ${argv[j]}
+		test-cpp $1 ${argv[j]}
 	done
-
-	# TODO make all .cpp test, iterate $@ and call test-cpp
 }
 
 function main() {

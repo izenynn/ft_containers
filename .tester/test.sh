@@ -78,7 +78,7 @@ EOF
 
 	# print results
 	#echo "$emoji"" $time $1/${2%.*}"
-	echo "$emoji"" $1/${2%.*}"
+	echo " $emoji | $1/${2%.*}"
 }
 
 function test-container() {

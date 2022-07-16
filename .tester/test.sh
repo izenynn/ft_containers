@@ -38,34 +38,30 @@ function test-cpp() {
 	diff_log="diff"".$1"".${2%.*}"".log"
 	time_log="time"".$1"".${2%.*}"".log"
 	
-	echo -e "\n=============================================================="
-	echo -e "\n>>> STARTING TESTS..."
 	rm -rf ./"$LOG_DIR"
 	mkdir ./"$LOG_DIR" 2> /dev/null
 	
-	echo -e "\n>>> RUNNING STL TESTS..."
+	# STD test
 	"$CC" $CFLAGS -o "$name" $src
 	./"$name" $3 > "./$LOG_DIR/$std_log" 2>&1
-	echo "STD:" > "./$LOG_DIR/$time_log"
-	\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	#\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	std_time=$(\time -f "%e" ./"$name" > /dev/null 2>&1) > /dev/null 2>&1
 	rm "$name"
 	
-	echo -e "\n>>> RUNNING FT TESTS..."
+	# FT test
 	"$CC" $CFLAGS -o "$name" -D "FT" $src
 	./"$name" $3 > "./$LOG_DIR/$ft_log" 2>&1
-	echo "FT:" >> "./$LOG_DIR/$time_log"
-	\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	#\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
+	#ft_time=$(\time -f "%e" ./"$name" > /dev/null 2>&1) 2>&1
 	rm "$name"
 	
-	echo -e "\n=============================================================="
-	echo -e "\n>>> FUNCTIONALITY RESULTS"
 	diff "./$LOG_DIR/$ft_log" "./$LOG_DIR/$std_log" 2> /dev/null > "./$LOG_DIR/$diff_log"
-	cat "./$LOG_DIR/$diff_log"
+	#echo "std: $std_time | ft: $ft_time" > "./$LOG_DIR/$time_log"
+	#time=$(cat "./$LOG_DIR/$time_log")
 	
 	# test results
 	if ! [[ -s ./$LOG_DIR/$diff_log ]]; then
-		echo "✅ PERFECT! \\(^O^)/"
-		ret="0"
+		emoji="✅"
 	else
 		regex=$(cat <<- EOF
 ^[0-9]*c[0-9]*
@@ -77,21 +73,22 @@ EOF
 	
 		cat "./$LOG_DIR/$diff_log" | grep -v -E -q "$regex"
 		res="$?"
-		[ "$res" -eq "0" ] && (echo "❌ KO (T.T)"; ret="1") || (echo "⚠️ OK!  (^.^)"; ret="0")
+		[ "$res" -eq "0" ] && emoji="❌" || emoji= "⚠️ ";
 	fi
-	
-	# time results
-	echo -e "\n=============================================================="
-	echo -e "\n>>> TIME RESULTS"
-	#cat "./$LOG_DIR/$TIME_FILE"
+
+	# print results
+	#echo "$emoji"" $time $1/${2%.*}"
+	echo "$emoji"" $1/${2%.*}"
 }
 
 function test-container() {
 	# $1 container name
 	# $@ .cpp files to test for this container
+
+	echo -e "\n$1\n"
+
 	argc=$#
 	argv=("$@")
-
 	if [[ -z $2 ]]; then
 		echo "[ERROR]: function test-container(): not enought arguments provided"
 		exit 1
@@ -102,6 +99,19 @@ function test-container() {
 }
 
 function main() {
+	echo "
+##########################################################################
+#   ___ __                         __         __                         #
+# .'  _|  |_     .----.-----.-----|  |_.---.-|__.-----.-----.----.-----. #
+# |   _|   _|    |  __|  _  |     |   _|  _  |  |     |  -__|   _|__ --| #
+# |__| |_________|____|_____|__|__|____|___._|__|__|__|_____|__| |_____| #
+#          |______|  __               __                                 #
+#                   |  |_.-----.-----|  |_.-----.----.                   #
+#                   |   _|  -__|__ --|   _|  -__|   _|                   #
+#                   |____|_____|_____|____|_____|__|                     #
+#                                                                        #
+##########################################################################"
+
 	test-container general main.cpp
 	exit 0
 }

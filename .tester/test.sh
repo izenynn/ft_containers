@@ -98,6 +98,27 @@ function test-container() {
 	done
 }
 
+function test-bencharmk() {
+	# $1 bencharmk name
+	# $@ .cpp files to test
+
+	echo -e "\n$1\n"
+
+	argc=$#
+	argv=("$@")
+	if [[ -z $2 ]]; then
+		echo "[ERROR]: function test-container(): not enought arguments provided"
+		exit 1
+	fi
+
+	name="test.out"
+	for (( j=1; j<argc; j++ )); do
+		"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		./"$name"
+		rm "$name"
+	done
+}
+
 function main() {
 	echo "
 ##########################################################################
@@ -112,7 +133,13 @@ function main() {
 #                                                                        #
 ##########################################################################"
 
+	# functionality checks
 	test-container general main.cpp
+
+	# bencharmk
+	test-bencharmk benchmark benchmarks.cpp
+
+	# exit
 	exit 0
 }
 

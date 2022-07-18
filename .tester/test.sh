@@ -5,9 +5,9 @@ CC="g++"
 #CC="clang++"
 
 # flags
-CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-#CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3 -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
-#CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic -g3"
+CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic"
+#CFLAGS+=" -g3 -fsanitize=address"
+CFLAGS+=" -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
 
 # src
 SRC_DIR="./srcs"
@@ -103,10 +103,9 @@ function test-bencharmk() {
 		exit 1
 	fi
 
-	CFLAGS+=" -O3"
 	name="bench.elf"
 	for (( j=1; j<argc; j++ )); do
-		"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		"$CC" $CFLAGS "-O3" -o "$name" "./$SRC_DIR/$1/${argv[j]}"
 		./"$name"
 		rm "$name"
 	done

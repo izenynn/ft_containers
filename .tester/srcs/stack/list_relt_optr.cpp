@@ -1,6 +1,7 @@
 #include "common.hpp"
+#include <list>
 
-typedef std::vector<foo<int> > container_type;
+typedef std::list<foo<int> > container_type;
 #define t_stack ft::stack<foo<int>, container_type>
 
 void comp(const std::string& name, const t_stack& lhs, const t_stack& rhs) {
@@ -13,17 +14,16 @@ void comp(const std::string& name, const t_stack& lhs, const t_stack& rhs) {
 }
 
 int main(void) {
-	t_stack a;
-	printCopySize("a", a);
+	container_type a;
 
 	std::cout << "\na: push: 1234, 1983, 12, 1337, -2003, 0, 313\n";
-	a.push(1234);
-	a.push(1983);
-	a.push(13);
-	a.push(1337);
-	a.push(-2003);
-	a.push(0);
-	a.push(313);
+	a.push_back(1234);
+	a.push_back(1983);
+	a.push_back(13);
+	a.push_back(1337);
+	a.push_back(-2003);
+	a.push_back(0);
+	a.push_back(313);
 
 	std::cout << "\ncreate: b: copy ctorz using a\n";
 	t_stack b(a);

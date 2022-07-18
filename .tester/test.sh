@@ -131,11 +131,13 @@ function main() {
 	#test-container general \
 	#	main.cpp
 
+	#test-container utils \
+
 	test-container stack \
 		ctorz.cpp			push.cpp			push_pop.cpp		copy_ctorz.cpp \
-		list_ctorz.cpp		relt_optr.cpp
+		list_ctorz.cpp		relt_optr.cpp		list_relt_optr.cpp	\
 
-	test-bencharmk benchmark benchmarks.cpp
+	#test-bencharmk benchmark benchmarks.cpp
 
 	# exit
 	exit 0

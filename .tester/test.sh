@@ -29,7 +29,8 @@ function test-cpp() {
 		exit 1
 	fi
 
-	name="test.out"
+	std_name="std.elf"
+	ft_name="ft.elf"
 
 	src="$SRC_DIR/$1/$2"
 	
@@ -37,27 +38,18 @@ function test-cpp() {
 	ft_log="ft"".$1"".${2%.*}"".log"
 	diff_log="diff"".$1"".${2%.*}"".log"
 	time_log="time"".$1"".${2%.*}"".log"
-	
-	rm -rf ./"$LOG_DIR"
-	mkdir ./"$LOG_DIR" 2> /dev/null
-	
-	# STD test
-	"$CC" $CFLAGS -o "$name" $src
-	./"$name" $3 > "./$LOG_DIR/$std_log" 2>&1
-	#\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
-	std_time=$(\time -f "%e" ./"$name" > /dev/null 2>&1) > /dev/null 2>&1
-	rm "$name"
-	
-	# FT test
-	"$CC" $CFLAGS -o "$name" -D "FT" $src
-	./"$name" $3 > "./$LOG_DIR/$ft_log" 2>&1
-	#\time -p -a -o "./$LOG_DIR/$time_log" ./"$name" $3 > /dev/null 2>&1
-	#ft_time=$(\time -f "%e" ./"$name" > /dev/null 2>&1) 2>&1
-	rm "$name"
+		
+	# compile and run
+	"$CC" $CFLAGS -o "$std_name" $src
+	"$CC" $CFLAGS -o "$ft_name" -D "FT" $src
+
+	./"$std_name" $3 > "./$LOG_DIR/$std_log" 2>&1
+	./"$ft_name" $3 > "./$LOG_DIR/$ft_log" 2>&1
+
+	rm "$std_name"
+	rm "$ft_name"
 	
 	diff "./$LOG_DIR/$ft_log" "./$LOG_DIR/$std_log" 2> /dev/null > "./$LOG_DIR/$diff_log"
-	#echo "std: $std_time | ft: $ft_time" > "./$LOG_DIR/$time_log"
-	#time=$(cat "./$LOG_DIR/$time_log")
 	
 	# test results
 	if ! [[ -s ./$LOG_DIR/$diff_log ]]; then
@@ -111,7 +103,8 @@ function test-bencharmk() {
 		exit 1
 	fi
 
-	name="test.out"
+	CFLAGS+=" -O3"
+	name="bench.elf"
 	for (( j=1; j<argc; j++ )); do
 		"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
 		./"$name"
@@ -120,6 +113,9 @@ function test-bencharmk() {
 }
 
 function main() {
+	rm -rf ./"$LOG_DIR"
+	mkdir ./"$LOG_DIR" 2> /dev/null
+
 	echo "
 ##########################################################################
 #   ___ __                         __         __                         #
@@ -133,10 +129,13 @@ function main() {
 #                                                                        #
 ##########################################################################"
 
-	# functionality checks
-	test-container general main.cpp
+	#test-container general \
+	#	main.cpp
 
-	# bencharmk
+	test-container stack \
+		ctorz.cpp			push.cpp			push_pop.cpp		copy_ctorz.cpp \
+		list_ctorz.cpp		relt_optr.cpp
+
 	test-bencharmk benchmark benchmarks.cpp
 
 	# exit

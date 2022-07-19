@@ -139,7 +139,7 @@ function main() {
 
 	test-container vector \
 		ctorz.cpp			copy_ctorz.cpp		assign.cpp			at.cpp			\
-		front_back.cpp		
+		front_back.cpp		insert.cpp
 
 	# bencharmk
 	#test-bencharmk benchmark benchmark.cpp

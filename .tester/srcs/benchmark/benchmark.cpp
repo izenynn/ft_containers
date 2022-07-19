@@ -41,9 +41,9 @@ typedef std::vector<foo<int> > stack_container_type;
 namespace {
 	void results(const std::string& name, const std::clock_t& std, const std::clock_t& ft) {
 		if (((double)ft / (double)std) < 20.0) {
-			std::cout << "✅ | ft::" << name << " is " << (double)ft / (double)std << " times slower" << std::endl;
+			std::cout << " ✅ | ft::" << name << " is " << (double)ft / (double)std << " times slower" << std::endl;
 		} else {
-			std::cout << "❌ | ft::" << name << " is " << (double)ft / (double)std << " times slower" << std::endl;
+			std::cout << " ❌ | ft::" << name << " is " << (double)ft / (double)std << " times slower" << std::endl;
 		}
 	}
 }

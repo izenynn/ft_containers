@@ -13,31 +13,16 @@ int main(void) {
 	t_vector::iterator it = a.begin();
 	t_vector::const_iterator cit = a.begin();
 
-	// increment and decrement
-	{
-		t_vector::iterator tmp = ++it;
-		std::cout << "pre increment\ntmp: " << *tmp << ", it: " << *it << '\n';
-	}
-	{
-		t_vector::iterator tmp = --it;
-		std::cout << "pre decrement\ntmp: " << *tmp << ", it: " << *it << '\n';
-	}
-	{
-		t_vector::iterator tmp = it++;
-		std::cout << "post increment\ntmp: " << *tmp << ", it: " << *it << '\n';
-	}
-	{
-		t_vector::iterator tmp = it--;
-		std::cout << "post decrement\ntmp: " << *tmp << ", it: " << *it << '\n';
-	}
-
-	// operations
 	it = it + 7;
 	it = 2 + it;
 	it = it - 3;
 	std::cout
 		<< *(it += 2) << '\n'
 		<< *(it -= 1) << std::endl;
+	std::cout << "it value: " << it->getValue()
+		<< "\ncit value: " << cit->getValue();
+	std::cout << "it value: " << (*it).getValue()
+		<< "\ncit value: " << (*cit).getValue();
 	printSize("a", a);
 
 	*(it -= 3) = 1337;
@@ -51,6 +36,10 @@ int main(void) {
 		<< (cit == it) << '\n'
 		<< (cit - it) << '\n'
 		<< (cit + 6 == it) << std::endl;
+	std::cout << "it value: " << it->getValue()
+		<< "\ncit value: " << cit->getValue();
+	std::cout << "it value: " << (*it).getValue()
+		<< "\ncit value: " << (*cit).getValue();
 	printSize("a", a);
 
 	return 0;

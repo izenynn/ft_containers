@@ -105,7 +105,8 @@ function test-bencharmk() {
 
 	name="bench.elf"
 	for (( j=1; j<argc; j++ )); do
-		"$CC" $CFLAGS "-O3" -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		#"$CC" $CFLAGS "-O3" -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
 		./"$name"
 		rm "$name"
 	done
@@ -128,16 +129,16 @@ function main() {
 #                                                                        #
 ##########################################################################"
 
-	#test-container general \
-	#	main.cpp
-
-	#test-container utils \
+	# functionality tests
+	test-container general \
+		main.cpp
 
 	test-container stack \
 		ctorz.cpp			push.cpp			push_pop.cpp		copy_ctorz.cpp \
 		list_ctorz.cpp		relt_optr.cpp		list_relt_optr.cpp	\
 
-	#test-bencharmk benchmark benchmarks.cpp
+	# bencharmk
+	test-bencharmk benchmark benchmark.cpp
 
 	# exit
 	exit 0

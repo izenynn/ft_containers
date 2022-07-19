@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 15:16:26 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/19 13:20:54 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 namespace ft {
 	template<
 		class Key,
-		class Compare = std::less<Key>,
-		class Allocator = std::allocator<Key>
+		class Compare = ::std::less<Key>,
+		class Allocator = ::std::allocator<Key>
 	> class set {
 		public:
 			// typedefs

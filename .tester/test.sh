@@ -65,7 +65,7 @@ EOF
 	
 		cat "./$LOG_DIR/$diff_log" | grep -v -E -q "$regex"
 		res="$?"
-		[ "$res" -eq "0" ] && emoji="❌" || emoji= "⚠️ ";
+		( [ "$res" -eq "0" ] && emoji="❌" ) || emoji="❎"
 	fi
 
 	# print results
@@ -130,23 +130,26 @@ function main() {
 ##########################################################################"
 
 	# functionality tests
-	test-container general \
-		main.cpp
+	#test-container general \
+	#	main.cpp
 
-	test-container stack \
-		ctorz.cpp			push.cpp			push_pop.cpp		copy_ctorz.cpp		\
-		assign_optr.cpp		list_ctorz.cpp		relt_optr.cpp		list_relt_optr.cpp	\
+	#test-container stack \
+	#	ctorz.cpp			push.cpp			push_pop.cpp		copy_ctorz.cpp		\
+	#	assign_optr.cpp		list_ctorz.cpp		relt_optr.cpp		list_relt_optr.cpp	\
 
 
-	test-container vector \
-		ctorz.cpp			copy_ctorz.cpp		assign_optr.cpp		assign.cpp			\
-		at.cpp				front_back.cpp		insert.cpp			erase.cpp			\
-		push_pop.cpp		resize.cpp			reserve.cpp			swap.cpp			\
-		ite.cpp				ite_optr.cpp		ite_relt_optr.cpp	rite.cpp			\
-		rite_optr.cpp		rite_relt_optr.cpp	relt_optr.cpp
+	#test-container vector \
+	#	ctorz.cpp			copy_ctorz.cpp		assign_optr.cpp		assign.cpp			\
+	#	at.cpp				front_back.cpp		insert.cpp			erase.cpp			\
+	#	push_pop.cpp		resize.cpp			reserve.cpp			swap.cpp			\
+	#	ite.cpp				ite_optr.cpp		ite_relt_optr.cpp	rite.cpp			\
+	#	rite_optr.cpp		rite_relt_optr.cpp	relt_optr.cpp
+
+	test-container map \
+		ctorz.cpp
 
 	# bencharmk
-	test-bencharmk benchmark benchmark.cpp
+	#test-bencharmk benchmark benchmark.cpp
 
 	# exit
 	exit 0

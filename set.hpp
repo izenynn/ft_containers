@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/21 22:10:34 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:11:25 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,6 @@ namespace ft {
 			}
 			void erase(iterator first, iterator last) {
 				for (iterator it = first; it != last;) {
-					std::cout << "===== ERASE =====" << std::endl;
 					this->_tree.remove(*(it++));
 				}
 			}

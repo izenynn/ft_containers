@@ -65,7 +65,7 @@ EOF
 	
 		cat "./$LOG_DIR/$diff_log" | grep -v -E -q "$regex"
 		res="$?"
-		[ "$res" -eq "0" ] && emoji="❌" || emoji="❎"
+		[ "$res" -eq "0" ] && emoji="❌" || emoji="⚠️"
 	fi
 
 	# print results

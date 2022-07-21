@@ -145,10 +145,11 @@ function main() {
 	#	ite.cpp				ite_optr.cpp		ite_relt_optr.cpp	rite.cpp			\
 	#	rite_optr.cpp		rite_relt_optr.cpp	relt_optr.cpp
 
+	#	ctorz.cpp			insert.cpp			copy_ctorz.cpp		assign_optr.cpp		\
+	#	sqbr_optr.cpp		erase.cpp			"clear.cpp"			"find.cpp"			\
+	#	count.cpp			swap.cpp			relt_optr.cpp		ite.cpp				\
 	test-container map \
-		ctorz.cpp			insert.cpp			copy_ctorz.cpp		assign_optr.cpp		\
-		sqbr_optr.cpp		erase.cpp			"clear.cpp"			"find.cpp"			\
-		count.cpp			swap.cpp			sqbr_optr.cpp
+		ite_optr.cpp		rite.cpp			rite_optr.cpp		compare.cpp
 
 	# bencharmk
 	#test-bencharmk benchmark benchmark.cpp

@@ -45,7 +45,7 @@ int main(void) {
 	std::cout << *it << std::endl;
 	printSize("a", a);
 
-	std::cout
+	std::cout << std::boolalpha
 		<< *(cit += 3) << '\n'
 		<< *(cit -= 3) << '\n'
 		<< (cit == it) << '\n'

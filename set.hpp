@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/21 23:11:25 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:22:51 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,8 +219,8 @@ namespace ft {
 
 			allocator_type get_allocator() const { return this->_alloc; }
 
-			tree_type		_tree;
 		private:
+			tree_type		_tree;
 			key_compare		_comp;
 			allocator_type	_alloc;
 			value_compare	_value_comp;

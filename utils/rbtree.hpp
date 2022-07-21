@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/21 23:10:00 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:22:34 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -442,22 +442,27 @@ namespace ft {
 			const_reverse_iterator	rbegin() const { return const_reverse_iterator(end()); }
 			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
 
-			//TODO debug (print all tree)
-			void print(const std::string& prefix = "", const ft::rbnode<T>* node = NULL, bool isLeft = false) {
-				if (node == NULL)
-					node = this->node_root;
-				if (node != this->node_nil) {
-					std::cout << prefix;
-					std::cout << (isLeft ? "├──" : "└──" );
-					if (node->color == ft::rbnode<T>::RED) {
-						std::cout << node->color << " - " << node->data << std::endl;
+			/*void printHelper(node_type* root, std::string indent, bool last) {
+				if (root != this->node_nil) {
+					std::cout << indent;
+					if (last) {
+						std::cout << "R----";
+						indent += "   ";
 					} else {
-						std::cout << node->color << " - " << node->data << std::endl;
+						std::cout << "L----";
+						indent += "|  ";
 					}
-					print(prefix + (isLeft ? "│   " : "    "), node->right, true);
-					print(prefix + (isLeft ? "│   " : "    "), node->left, false);
+					std::string sColor = root->color ? "RED" : "BLACK";
+					std::cout << root->data << " (" << sColor << ")" << std::endl;
+					printHelper(root->left, indent, false);
+					printHelper(root->right, indent, true);
 				}
 			}
+			void print() {
+				if (this->node_root != this->node_nil) {
+					printHelper(this->node_root, "", true);
+				}
+			}*/
 
 		private:
 			// i mean, no, i don't need this and i don't wanna implement it (>.<)

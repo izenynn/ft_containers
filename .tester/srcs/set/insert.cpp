@@ -10,6 +10,7 @@ int main(void) {
 
 	a.insert(1337);
 	a.insert(3);
+	a.insert(3);
 	a.insert(42);
 	a.insert(313);
 	printSize("a", a);

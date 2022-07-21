@@ -14,6 +14,7 @@ int main(void) {
 
 	a.insert(ft::make_pair(1337, 12));
 	a.insert(ft::make_pair(3, 12));
+	a.insert(ft::make_pair(3, 15));
 	a.insert(ft::make_pair(42, 12));
 	a.insert(ft::make_pair(313, 12));
 	printSize("a", a);

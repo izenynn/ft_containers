@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # compiler
-CC="g++"
-#CC="clang++"
+#CC="g++"
+CC="clang++"
 
 # flags
 CFLAGS=" -std=c++98 -Wall -Wextra -Werror -Wshadow -pedantic"
-#CFLAGS+=" -g3 -fsanitize=address"
-CFLAGS+=" -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
+CFLAGS+=" -g3 -fsanitize=address"
+#CFLAGS+=" -g3 -fsanitize=address -fsanitize=leak -fsanitize=undefined -fsanitize=bounds -fsanitize=null"
 
 # src
 SRC_DIR="./srcs"

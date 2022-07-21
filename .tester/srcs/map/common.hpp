@@ -4,7 +4,14 @@
 # include "../tester.hpp"
 # include <iostream>
 
-template <class Key, class T>
+# define t_map ft::map<int, foo<int> >
+
+template<class Pair>
+void printPair(const Pair& it) {
+	std::cout << "pair first: " << it->first << ", second: " << it->second << std::endl;
+}
+
+template<class Key, class T>
 void printSize(const std::string& name, const ft::map<Key, T>& m) {
 	std::cout << "\nvar name: " << name
 		<< "\nsize: " << m.size()

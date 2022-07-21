@@ -147,8 +147,8 @@ function main() {
 
 	test-container map \
 		ctorz.cpp			insert.cpp			copy_ctorz.cpp		assign_optr.cpp		\
-		erase.cpp			"clear.cpp"			
-		
+		sqbr_optr.cpp		erase.cpp			"clear.cpp"			"find.cpp"			\
+		count.cpp			swap.cpp			sqbr_optr.cpp
 
 	# bencharmk
 	#test-bencharmk benchmark benchmark.cpp

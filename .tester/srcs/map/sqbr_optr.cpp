@@ -16,14 +16,19 @@ int main(void) {
 	printSize("a", a);
 	printSize("b", b);
 
-	b.insert(ft::make_pair(1337, 12));
-	b.insert(ft::make_pair(3, 12));
-	b.insert(ft::make_pair(42, 12));
-	b.insert(ft::make_pair(313, 12));
+	a[1337] = 12;
+	a[3] = 13;
+	a[32] = a[3];
+	a[313] = 7;
 	printSize("a", a);
 	printSize("b", b);
 
-	a.clear();
+	b[15415] = a[1337];
+	printSize("a", a);
+	printSize("b", b);
+
+	std::cout << "insert using operator[]: " << a[87] << std::endl;
+	std::cout << "insert using operator[]: " << b[31] << std::endl;
 	printSize("a", a);
 	printSize("b", b);
 

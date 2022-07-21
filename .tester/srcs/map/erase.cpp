@@ -1,8 +1,6 @@
 #include "common.hpp"
 #include <list>
 
-#define t_map ft::map<int, foo<int> >
-
 int main(void) {
 	std::list<ft::pair<int, foo<int> > > aux;
 	for (int i = 0; i < 20; ++i) aux.push_back(ft::make_pair(i * 11 / (i + 1), i * i));

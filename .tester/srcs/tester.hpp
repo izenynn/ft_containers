@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 20:51:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/17 12:09:34 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 13:27:38 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,16 @@
 # include <deque>
 
 # ifndef FT //CREATE A REAL STL EXAMPLE
-	#include <map>
 	#include <stack>
 	#include <vector>
+	#include <map>
+	#include <set>
 	namespace ft = std;
 # else
-	#include "../../map.hpp"
 	#include "../../stack.hpp"
 	#include "../../vector.hpp"
+	#include "../../map.hpp"
+	#include "../../set.hpp"
 # endif
 
 # include <stdlib.h>

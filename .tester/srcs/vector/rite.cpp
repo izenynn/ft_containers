@@ -22,6 +22,8 @@ int main(void) {
 		t_vector::const_reverse_iterator aux4(aux1);
 		t_vector::const_reverse_iterator aux5(aux2);
 		t_vector::const_reverse_iterator aux6(aux4);
+		(void)aux5;
+		(void)aux6;
 	}
 
 	// increment and decrement

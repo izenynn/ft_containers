@@ -6,13 +6,14 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 15:20:56 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 23:07:24 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBTREE_HPP_
 # define RBTREE_HPP_
 
+# include <iostream> // remove this
 # include <memory>
 # include <functional> // std::less
 
@@ -132,79 +133,101 @@ namespace ft {
 				return ret;
 			}
 			ft::pair<iterator, bool> nodeInsert(const value_type& content) {
-				if (this->node_root == this->node_nil) {
+				if (this->node_root == this->node_nil) { // ok
 					this->node_root = nodeCreate(content, this->node_nil);
 					++this->size;
 					this->node_root->parent = this->node_nil;
 					this->node_nil->left = this->node_root;
 					this->node_nil->right = this->node_root;
 					return ft::make_pair(iterator(this->node_root, this->node_root, this->node_nil), true);
-				} else {
-					pointer it = this->node_root;
+				} else { // ok
+					pointer aux = this->node_root;
 					//while (it) {
-					while (it != this->node_nil) {
-						if (this->comp(it->data, content)) {
-							if (it->right == this->node_nil) break;
-							it = it->right;
-						} else if (this->comp(content, it->data)) {
-							if (it->left == this->node_nil) break;
-							it = it->left;
+					while (aux != this->node_nil) { // ok
+						if (this->comp(aux->data, content)) {
+							if (aux->right == this->node_nil) break;
+							aux = aux->right;
+						} else if (this->comp(content, aux->data)) {
+							if (aux->left == this->node_nil) break;
+							aux = aux->left;
 						} else {
 							this->node_root->parent = this->node_nil;
 							this->node_nil->left = this->node_root;
 							this->node_nil->right = this->node_root;
-
-							return ft::make_pair(iterator(it, this->node_root, this->node_nil), false);
+							return ft::make_pair(iterator(aux, this->node_root, this->node_nil), false);
 						}
 					}
-					if (this->comp(it->data, content)) {
-						it->right = nodeCreate(content, it);
-						it = it->right;
-					} else if (this->comp(content, it->data)) {
-						it->left = nodeCreate(content, it);
-						it = it->left;
+					if (this->comp(aux->data, content)) { // ok
+						aux->right = nodeCreate(content, aux);
+						aux = aux->right;
+					} else if (this->comp(content, aux->data)) { // ok
+						aux->left = nodeCreate(content, aux);
+						aux = aux->left;
 					}
 					// nearby nodes
-					this->insertFix(it);
+					this->insertFix(aux);
 					++this->size;
 					this->node_root->parent = this->node_nil;
 					this->node_nil->left = this->node_root;
 					this->node_nil->right = this->node_root;
-
-					return ft::make_pair(iterator(it, this->node_root, this->node_nil), true);
+					return ft::make_pair(iterator(aux, this->node_root, this->node_nil), true);
 				}
 			}
-#include <iostream>
+			// error is here, 100%
 			void insertFix(pointer node) {
 				if (node != this->node_root && node->isRed() && node->parent->isRed()) {
 					if (node->getUncle() != ft::nullptr_t && node->getUncle()->isRed()) {
+						std::cout << "--- a" << std::endl;
+						std::cout << "parn: " << (node->parent->color ? false : true) << " - " << node->parent->data << std::endl;
+						std::cout << "uncl: " << (node->getUncle()->color ? false : true) << " - " << node->getUncle()->data << std::endl;
+						std::cout << "gran: " << (node->getGrandParent()->color ? false : true) << " - " << node->getGrandParent()->data << std::endl;
 						// color
 						node->getUncle()->setBlack();
 						node->parent->setBlack();
 						node->getGrandParent()->setRed();
 						insertFix(node->getGrandParent());
 					} else if (node->parent != this->node_root && node->parent->isLeft()) {
+						std::cout << "--- b" << std::endl;
+						std::cout << "node: " << node->color << " - " << node->data << std::endl;
+						std::cout << "parn: " << node->parent->color << " - " << node->parent->data << std::endl;
+						std::cout << "gran: " << node->getGrandParent()->color << " - " << node->getGrandParent()->data << std::endl;
 						// left
+						this->print(); // [!]
+						pointer node_aux = node;
 						pointer parent = node->parent;
 						pointer grandpa = node->getGrandParent();
 						if (node->isRight()) {
+							std::cout << "PATATAAAAAAAAA" << std::endl;
 							this->rotateLeft(parent);
+							node_aux = parent;
+							parent = node_aux->parent;
 							this->rotateRight(grandpa); // ???
-							this->insertFix(grandpa); // ???
+							this->swapColor(parent, grandpa);
+							this->print(); // [!]
+							this->insertFix(parent); // ???
 						} else {
 							this->rotateRight(grandpa);
 							this->swapColor(parent, grandpa);
+							this->print(); // [!]
 							this->insertFix(parent);
 						}
 
 					} else if (node->parent != this->node_root && node->parent->isRight()) {
+						std::cout << "--- c" << std::endl;
+						std::cout << "node: " << (node->color ? false : true) << " - " << node->data << std::endl;
+						std::cout << "parn: " << (node->parent->color ? false : true) << " - " << node->parent->data << std::endl;
+						std::cout << "gran: " << (node->getGrandParent()->color ? false : true) << " - " << node->getGrandParent()->data << std::endl;
 						// right
+						pointer node_aux = node;
 						pointer parent = node->parent;
 						pointer grandpa = node->getGrandParent();
 						if (node->isLeft()) {
 							this->rotateRight(parent);
+							node_aux = parent;
+							parent = node_aux->parent;
 							this->rotateLeft(grandpa); // ???
-							this->insertFix(grandpa); // ???
+							this->swapColor(parent, grandpa);
+							this->insertFix(parent); // ???
 						} else {
 							this->rotateLeft(grandpa);
 							this->swapColor(parent, grandpa);
@@ -212,6 +235,7 @@ namespace ft {
 						}
 					}
 				}
+				//this->print(); // [!]
 				this->node_root->setBlack();
 				this->node_root->parent = this->node_nil;
 				this->node_nil->left = this->node_root;
@@ -219,7 +243,9 @@ namespace ft {
 			}
 
 			void remove(const value_type& content) {
+				//std::cout << "1" << std::endl;
 				nodeRemove(content);
+				//std::cout << "2" << std::endl;
 				this->node_root->parent = this->node_nil;
 				this->node_nil->left = this->node_root;
 				this->node_nil->right = this->node_root;
@@ -231,31 +257,41 @@ namespace ft {
 				// itera este while de mas, 8 veces en vez de 2
 				while (it != this->node_nil
 						&& (this->comp(it->data, content) || this->comp(content, it->data))) {
+					std::cout << "AAAAA" << std::endl;
 					if (this->comp(it->data, content)) {
 						it = it->right;
 					} else if (this->comp(content, it->data)) {
 						it = it->left;
 					}
 				}
+				std::cout << "bbb" << std::endl;
 				if (it == this->node_nil) return;
+				std::cout << "ccc" << std::endl;
 
 				bool color = it->color;
 				if (it->left == this->node_nil) {
+					std::cout << "AAAAA" << std::endl;
 					save = it->right;
 					this->nodeReplace(it, it->right);
 				} else if (it->right == this->node_nil) {
+					std::cout << "BBBBB" << std::endl;
 					save = it->left;
 					this->nodeReplace(it, it->left);
 				} else {
+					std::cout << "CCCCC" << std::endl;
 					pointer aux = it->right;
 					while (aux->left != this->node_nil) {
+						std::cout << "ddd" << std::endl;
 						aux = aux->left;
 					}
+					std::cout << "DDDDD" << std::endl;
 					color = aux->color;
 					save = aux->right;
 					if (aux->parent == it) {
+						std::cout << "e1" << std::endl;
 						save->parent = aux;
 					} else {
+						std::cout << "e2" << std::endl;
 						this->nodeReplace(aux, aux->right);
 						aux->right = it->right;
 						aux->right->parent = aux;
@@ -268,11 +304,15 @@ namespace ft {
 				--this->size;
 				this->node_alloc.destroy(it);
 				this->node_alloc.deallocate(it, 1);
+				std::cout << "eee" << std::endl;
 				//if (color == node_type::e_color::BLACK) removeFix(save);
 				if (color == node_type::BLACK) {
+					std::cout << "FFFFF" << std::endl;
 					pointer aux;
 					while (save->parent != this->node_nil && save->isBlack()) {
+						std::cout << "it..." << std::endl;
 						if (save->isLeft()) {
+							std::cout << "1.1" << std::endl;
 							aux = save->parent->right;
 							if (aux->isRed()) {
 								aux->setBlack();
@@ -298,19 +338,28 @@ namespace ft {
 								save = this->node_root;
 							}
 						} else {
+							std::cout << "1.2" << std::endl;
 							aux = save->parent->left;
+							std::cout << "VALUE: " << aux->data << std::endl;
+							std::cout << "COLOR: " << aux->color << std::endl;
+							// entra aqui (no deberia)
 							if (aux->isRed()) {
+								std::cout << "1.2.1" << std::endl;
 								aux->setBlack();
 								save->parent->setRed();
 								this->rotateRight(save->parent);
 								aux = save->parent->left;
 							}
-
+							std::cout << "CHECKPOINT" << std::endl;
+							// deberia entrar aqui, pero pega segfault en el if() -> heap-use-after-free
 							if (aux->right->isBlack() && aux->left->isBlack()) {
+								std::cout << "1.2.2" << std::endl;
 								aux->setRed();
 								save = save->parent;
 							} else {
+								std::cout << "1.2.3" << std::endl;
 								if (aux->left->isBlack()) {
+									std::cout << "1.2.3.1" << std::endl;
 									aux->right->setBlack();
 									aux->setRed();
 									this->rotateLeft(aux);
@@ -435,6 +484,21 @@ namespace ft {
 			const_reverse_iterator	rend() const { return const_reverse_iterator(begin()); }
 
 			//TODO debug (print all tree)
+			void print(const std::string& prefix = "", const ft::rbnode<T>* node = NULL, bool isLeft = false) {
+				if (node == NULL)
+					node = this->node_root;
+				if (node != this->node_nil) {
+					std::cout << prefix;
+					std::cout << (isLeft ? "├──" : "└──" );
+					if (node->color == ft::rbnode<T>::RED) {
+						std::cout << node->color << " - " << node->data << std::endl;
+					} else {
+						std::cout << node->color << " - " << node->data << std::endl;
+					}
+					print(prefix + (isLeft ? "│   " : "    "), node->right, true);
+					print(prefix + (isLeft ? "│   " : "    "), node->left, false);
+				}
+			}
 
 		private:
 			// i mean, no, i don't need this and i don't wanna implement it (>.<)

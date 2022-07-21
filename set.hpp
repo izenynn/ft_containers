@@ -6,13 +6,14 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/19 13:20:54 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 22:10:34 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SET_HPP_
 # define SET_HPP_
 
+# include <iostream>
 # include <memory>
 
 # include "utils/pair.hpp"
@@ -130,6 +131,7 @@ namespace ft {
 			}
 			void erase(iterator first, iterator last) {
 				for (iterator it = first; it != last;) {
+					std::cout << "===== ERASE =====" << std::endl;
 					this->_tree.remove(*(it++));
 				}
 			}
@@ -218,8 +220,8 @@ namespace ft {
 
 			allocator_type get_allocator() const { return this->_alloc; }
 
-		private:
 			tree_type		_tree;
+		private:
 			key_compare		_comp;
 			allocator_type	_alloc;
 			value_compare	_value_comp;

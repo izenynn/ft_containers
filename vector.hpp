@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/05 08:56:18 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 19:10:34 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/21 14:03:59 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,7 +218,7 @@ namespace ft {
 				}
 				for (iterator it = this->end(); it > position; --it) {
 					this->_alloc.construct(it.base(), *(it - 1)); // [!] SEGV on unknown address
-					//this->_alloc.destroy(it.base() + 1); // TODO don't know if it's neccesary
+					//this->_alloc.destroy(it.base() + 1); // TODO don't know if it's neccesary, i think you can construct over something without worries
 				}
 				this->_alloc.construct(position.base(), x); // this shit SEGFAULTS
 				++(this->_size); // this shit also SEGFAULTS

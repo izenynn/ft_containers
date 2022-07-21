@@ -65,7 +65,7 @@ EOF
 	
 		cat "./$LOG_DIR/$diff_log" | grep -v -E -q "$regex"
 		res="$?"
-		( [ "$res" -eq "0" ] && emoji="❌" ) || emoji="❎"
+		[ "$res" -eq "0" ] && emoji="❌" || emoji="❎"
 	fi
 
 	# print results
@@ -105,8 +105,8 @@ function test-bencharmk() {
 
 	name="bench.elf"
 	for (( j=1; j<argc; j++ )); do
-		#"$CC" $CFLAGS "-O3" -o "$name" "./$SRC_DIR/$1/${argv[j]}"
-		"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		"$CC" $CFLAGS "-O3" -o "$name" "./$SRC_DIR/$1/${argv[j]}"
+		#"$CC" $CFLAGS -o "$name" "./$SRC_DIR/$1/${argv[j]}"
 		./"$name"
 		rm "$name"
 	done
@@ -146,7 +146,9 @@ function main() {
 	#	rite_optr.cpp		rite_relt_optr.cpp	relt_optr.cpp
 
 	test-container map \
-		ctorz.cpp
+		ctorz.cpp			insert.cpp			copy_ctorz.cpp		assign_optr.cpp		\
+		erase.cpp			"clear.cpp"			
+		
 
 	# bencharmk
 	#test-bencharmk benchmark benchmark.cpp

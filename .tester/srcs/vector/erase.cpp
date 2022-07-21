@@ -15,10 +15,10 @@ int main(void) {
 	printSize("a", a);
 
 	b.insert(b.end(), 5);
-	b.erase(a.end() - 1);
+	a.erase(a.end() - 1);
 	b.insert(b.begin(), 3, 4);
-	b.erase(a.begin());
-	b.erase(a.end() - 1);
+	a.erase(a.begin());
+	b.erase(b.end() - 1);
 	a.erase(a.end() - 1);
 	printSize("a", a);
 	printSize("b", b);
@@ -30,7 +30,7 @@ int main(void) {
 	printSize("b", b);
 
 	b.insert(b.end(), 4, 7);
-	b.erase(b.end() - 3, b.end());
+	b.erase(b.end() - 3, b.end() - 1);
 	printSize("b", b);
 
 	for (std::size_t i = 0; i < 10; ++i) {
@@ -44,8 +44,8 @@ int main(void) {
 	b.erase(b.begin(), b.begin() + 2);
 	printSize("b", b);
 
-	b.insert(b.begin(), a.begin() + 5, a.end());
-	b.erase(b.end());
+	b.insert(b.begin(), a.begin() + 5, a.end() - 1);
+	b.erase(b.end() - 1);
 	printSize("b", b);
 
 	// return value

@@ -6,14 +6,13 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:42:41 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/21 23:22:34 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:23:47 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RBTREE_HPP_
 # define RBTREE_HPP_
 
-# include <iostream> // remove this
 # include <memory>
 # include <functional> // std::less
 
@@ -25,7 +24,6 @@
 # include "swap.hpp"
 
 namespace ft {
-	//template<class T, class Compare, class Allocator>
 	template<class T, class Compare = std::less<T>, class Allocator = std::allocator<T> >
 	class rbtree {
 		public:
@@ -36,11 +34,6 @@ namespace ft {
 			typedef std::ptrdiff_t	difference_type;
 
 			typedef Compare		compare;
-
-			//typedef typename Allocator::reference			reference;
-			//typedef typename Allocator::const_reference		const_reference;
-			//typedef typename Allocator::pointer				pointer;
-			//typedef typename Allocator::const_pointer		const_pointer;
 
 			typedef ft::rbnode<value_type>									node_type;
 			typedef typename Allocator::template rebind<node_type>::other	node_allocator;
@@ -66,7 +59,6 @@ namespace ft {
 
 			// constructors
 			rbtree() : size(0), comp(compare()) {
-				// TODO use nodeCreate instead?
 				this->node_nil = this->node_alloc.allocate(1);
 				this->node_alloc.construct(this->node_nil, value_type());
 
@@ -75,9 +67,7 @@ namespace ft {
 
 				this->node_root = this->node_nil;
 
-				//this->node_nil->left = this->node_nil;
 				this->node_nil->left = this->node_root;
-				//this->node_nil->right = this->node_nil;
 				this->node_nil->right = this->node_root;
 
 				this->node_root->parent = this->node_nil;
@@ -92,9 +82,7 @@ namespace ft {
 
 				this->node_root = this->node_nil;
 
-				//this->node_nil->left = this->node_nil;
 				this->node_nil->left = this->node_root;
-				//this->node_nil->right = this->node_nil;
 				this->node_nil->right = this->node_root;
 
 				this->node_root->parent = this->node_nil;
@@ -133,17 +121,16 @@ namespace ft {
 				return ret;
 			}
 			ft::pair<iterator, bool> nodeInsert(const value_type& content) {
-				if (this->node_root == this->node_nil) { // ok
+				if (this->node_root == this->node_nil) {
 					this->node_root = nodeCreate(content, this->node_nil);
 					++this->size;
 					this->node_root->parent = this->node_nil;
 					this->node_nil->left = this->node_root;
 					this->node_nil->right = this->node_root;
 					return ft::make_pair(iterator(this->node_root, this->node_root, this->node_nil), true);
-				} else { // ok
+				} else {
 					pointer aux = this->node_root;
-					//while (it) {
-					while (aux != this->node_nil) { // ok
+					while (aux != this->node_nil) {
 						if (this->comp(aux->data, content)) {
 							if (aux->right == this->node_nil) break;
 							aux = aux->right;
@@ -157,10 +144,10 @@ namespace ft {
 							return ft::make_pair(iterator(aux, this->node_root, this->node_nil), false);
 						}
 					}
-					if (this->comp(aux->data, content)) { // ok
+					if (this->comp(aux->data, content)) {
 						aux->right = nodeCreate(content, aux);
 						aux = aux->right;
-					} else if (this->comp(content, aux->data)) { // ok
+					} else if (this->comp(content, aux->data)) {
 						aux->left = nodeCreate(content, aux);
 						aux = aux->left;
 					}
@@ -173,7 +160,7 @@ namespace ft {
 					return ft::make_pair(iterator(aux, this->node_root, this->node_nil), true);
 				}
 			}
-			// error is here, 100%
+
 			void insertFix(pointer node) {
 				if (node != this->node_root && node->isRed() && node->parent->isRed()) {
 					if (node->getUncle() != ft::nullptr_t && node->getUncle()->isRed()) {
@@ -191,9 +178,9 @@ namespace ft {
 							this->rotateLeft(parent);
 							node_aux = parent;
 							parent = node_aux->parent;
-							this->rotateRight(grandpa); // ???
+							this->rotateRight(grandpa);
 							this->swapColor(parent, grandpa);
-							this->insertFix(parent); // ???
+							this->insertFix(parent);
 						} else {
 							this->rotateRight(grandpa);
 							this->swapColor(parent, grandpa);
@@ -209,9 +196,9 @@ namespace ft {
 							this->rotateRight(parent);
 							node_aux = parent;
 							parent = node_aux->parent;
-							this->rotateLeft(grandpa); // ???
+							this->rotateLeft(grandpa);
 							this->swapColor(parent, grandpa);
-							this->insertFix(parent); // ???
+							this->insertFix(parent);
 						} else {
 							this->rotateLeft(grandpa);
 							this->swapColor(parent, grandpa);
@@ -235,7 +222,6 @@ namespace ft {
 			void nodeRemove(const value_type& content) {
 				pointer it = this->node_root;
 				pointer save;
-				// itera este while de mas, 8 veces en vez de 2
 				while (it != this->node_nil
 						&& (this->comp(it->data, content) || this->comp(content, it->data))) {
 					if (this->comp(it->data, content)) {
@@ -275,7 +261,6 @@ namespace ft {
 				--this->size;
 				this->node_alloc.destroy(it);
 				this->node_alloc.deallocate(it, 1);
-				//if (color == node_type::e_color::BLACK) removeFix(save);
 				if (color == node_type::BLACK) {
 					pointer aux;
 					while (save->parent != this->node_nil && save->isBlack()) {
@@ -306,14 +291,12 @@ namespace ft {
 							}
 						} else {
 							aux = save->parent->left;
-							// entra aqui (no deberia)
 							if (aux->isRed()) {
 								aux->setBlack();
 								save->parent->setRed();
 								this->rotateRight(save->parent);
 								aux = save->parent->left;
 							}
-							// deberia entrar aqui, pero pega segfault en el if() -> heap-use-after-free
 							if (aux->right->isBlack() && aux->left->isBlack()) {
 								aux->setRed();
 								save = save->parent;
@@ -465,10 +448,7 @@ namespace ft {
 			}*/
 
 		private:
-			// i mean, no, i don't need this and i don't wanna implement it (>.<)
-			rbtree& operator=(const rbtree& other) {
-				(void)other;
-			}
+			rbtree& operator=(const rbtree& other) { (void)other; }
 	};
 }
 

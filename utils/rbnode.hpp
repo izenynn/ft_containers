@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 16:06:50 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/15 15:21:51 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:21:42 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,27 +36,12 @@ namespace ft {
 		bool		color;
 
 		// constructors
-		//node() : color(k_red) {}
-
 		rbnode(const value_type& value)
 		: left(ft::nullptr_t),
 		  right(ft::nullptr_t),
 		  parent(ft::nullptr_t),
 		  data(value),
 		  color(rbnode::BLACK) {}
-		//rbnode(const value_type& value, rbnode* nil)
-		//: left(nil),
-		//  right(nil),
-		//  parent(nil),
-		//  data(value),
-		//  color(rbnode::BLACK) {}
-
-		//rbnode(const rbnode& other)
-		//: left(other.left),
-		//  right(other.right),
-		//  parent(other.parent),
-		//  data(other.data),
-		//  color(other.color) {}
 
 		~rbnode() {}
 
@@ -69,11 +54,6 @@ namespace ft {
 
 		inline void setBlack() { this->color = rbnode::BLACK; return; }
 		inline void setRed() { this->color = rbnode::RED; return; }
-		/*inline void swapColor(rbnode& other) {
-			rbnode::e_color aux = this->color;
-			this->color = other.color;
-			other.color = aux;
-		}*/
 
 		inline bool isLeft() {
 			return this->parent->left == this;
@@ -81,14 +61,6 @@ namespace ft {
 		inline bool isRight() {
 			return this->parent->right == this;
 		}
-
-		/*inline void swapSide() {
-			assert(this->parent->children[rbnode::e_side::LEFT] == this
-					|| this->parent->children[rbnode::e_side::RIGHT] == this);
-			rbnode* aux = this->parent[rbnode::e_side::LEFT];
-			this->parent[rbnode::e_side::LEFT] = this->parent[rbnode::e_side::RIGHT];
-			this->parent[rbnode::e_side::RIGHT] = aux;
-		}*/
 
 		inline rbnode* getBrother() {
 			if (this->parent == ft::nullptr_t) return ft::nullptr_t;

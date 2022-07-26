@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/21 23:22:51 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:20:54 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ namespace ft {
 				return this->_tree.insert(value);
 			}
 			iterator insert(iterator hint, const value_type& value) {
-				// don't wanna implement this, it's already quite fast >.<
 				(void)hint;
 				return this->_tree.insert(value).first;
 			}

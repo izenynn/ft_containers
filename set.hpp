@@ -6,7 +6,7 @@
 /*   By: dpoveda- <me@izenynn.com>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 13:13:37 by dpoveda-          #+#    #+#             */
-/*   Updated: 2022/07/26 17:20:54 by dpoveda-         ###   ########.fr       */
+/*   Updated: 2022/07/26 17:33:17 by dpoveda-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ namespace ft {
 			typedef typename allocator_type::pointer			pointer;
 			typedef typename allocator_type::const_pointer		const_pointer;
 
+		private:
 			typedef ft::rbtree<value_type, value_compare, allocator_type>	tree_type;
+
+		public:
 			typedef typename tree_type::const_iterator						iterator;
 			typedef typename tree_type::const_iterator						const_iterator;
 			typedef typename ft::reverse_iterator<iterator>					reverse_iterator;

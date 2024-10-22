@@ -4,8 +4,8 @@
 
 Re-implementation of some c++ containers.
 
-- Status: 125%
-- Result: finished
+- Status: finished
+- Result: 125%
 - Observations: the standard used is `c++98`, `map` and `set` use a red-black tree.
 
 ## Containers
